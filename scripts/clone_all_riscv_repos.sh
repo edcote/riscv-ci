@@ -1,16 +1,16 @@
 #!/bin/bash
 
 REPOS=$(cat <<EOM
-https://github.com/riscv/riscv-tools.git 
-https://github.com/riscv/riscv-qemu.git
-https://github.com/riscv/riscv-linux.git
-https://github.com/riscv/riscv-pk.git
-https://github.com/riscv/riscv-gnu-toolchain
-https://github.com/riscv/riscv-isa-sim
-https://github.com/riscv/riscv-fesvr
+riscv-tools
+riscv-qemu
+riscv-linux
+riscv-pk
+riscv-gnu-toolchain
+riscv-isa-sim
+riscv-fesvr
 EOM
 )
 
 for r in $REPOS; do
-    git clone --recursive $r
+    cd $RISCV_CI/$r && git pull origin master && git submodule update --init --recursive $r
 done

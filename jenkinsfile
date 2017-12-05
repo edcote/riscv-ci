@@ -19,3 +19,14 @@ node("mynode") {
     }
     sh('ls')
 }
+
+pipeline {
+    agent any
+    stages {
+        stage('Example') {
+            steps {
+                echo 'Hello World'
+            }
+        }
+    }
+}

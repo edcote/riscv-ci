@@ -15,16 +15,6 @@ Primary reference:  [Linux/RISC-V installation manual](https://github.com/riscv/
     export PATH=$RISCV/bin:$PATH
     export MAKEFLAGS="$MAKEFLAGS -j8"
 
-### Required packages (Ubuntu)
-
-    sudo apt-get install autoconf automake autotools-dev curl \
-    device-tree-compiler libmpc-dev libmpfr-dev libgmp-dev gawk \
-    build-essential bison flex texinfo gperf libtool patchutils \
-    zlib1g-dev bc libusb-1.0-0-dev libncurses5-dev \
-    gcc libc6-dev pkg-config bridge-utils uml-utilities \
-    zlib1g-dev libglib2.0-dev autoconf automake libtool libsdl1.2-dev \
-    environment-modules
-
 ### Clone the required repositories
 
     cd $RISCV_SW

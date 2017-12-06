@@ -35,6 +35,8 @@ automake
 libtool
 libsdl1.2-dev
 environment-module
+default_jdk
+gradle
 EOM
 )
 for p in $PKGS; do

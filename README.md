@@ -1,4 +1,23 @@
-# RISC-V Linux Build
+# RISC-V Continuous Integration (Experimental)
+
+## Jenkins
+
+### Installation
+
+Information about automated information: https://blog.thesparktree.com/you-dont-know-jenkins-part-1
+
+### [Job DSL](https://wiki.jenkins.io/display/JENKINS/Job+DSL+Plugin)
+
+Used to create Jenkins jobs (different than pipelines) using scripts.
+
+Getting started example: https://github.com/sheehan/job-dsl-gradle-example.  The structure of the example has been copied over to this repo.
+
+Be sure to set JAVA_HOME before running gradle: `export JAVA_HOME=$(readlink -f /usr/bin/java | sed "s:jre/bin/java::")`
+
+    cd riscv-ci
+    gradle test
+
+# OLD MATERIAL
 
 Primary reference:  [Linux/RISC-V installation manual](https://github.com/riscv/riscv-tools#linuxman). Note the distinction between linux and newlib toolchain.
 

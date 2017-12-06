@@ -1,2 +1,5 @@
 build/
 .gradle
+out/
+.idea/gradle.xml
+.idea/workspace.xml

@@ -39,8 +39,8 @@ dependencies {
 jobdsl {
     servers {
         production {
-            jenkinsUrl = 'http://http://35.227.165.176:8080/'
-            jenkinsUser = 'edcote'
+            jenkinsUrl = 'http://35.227.165.176:8080/'
+            jenkinsUser = 'edc'
             jenkinsApiToken = 'e81141b8bf01b8844f35f95edd286a10'
         }
     }

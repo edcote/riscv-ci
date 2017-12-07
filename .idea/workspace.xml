@@ -2,14 +2,10 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="30478634-f362-44f4-828c-76b818dbe2f4" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.gitignore" afterPath="$PROJECT_DIR$/.gitignore" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/modules.xml" afterPath="$PROJECT_DIR$/.idea/modules.xml" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/.idea/modules.xml" afterPath="" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/modules/riscv-ci.iml" afterPath="$PROJECT_DIR$/.idea/modules/riscv-ci.iml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/modules/riscv-ci_jobdsl.iml" afterPath="$PROJECT_DIR$/.idea/modules/riscv-ci_jobdsl.iml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/vcs.xml" afterPath="$PROJECT_DIR$/.idea/vcs.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/build.gradle" afterPath="$PROJECT_DIR$/build.gradle" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/jobdsl/example.groovy" afterPath="$PROJECT_DIR$/src/jobdsl/example.groovy" />
     </list>
     <ignored path="$PROJECT_DIR$/.gradle/" />
     <ignored path="$PROJECT_DIR$/build/" />
@@ -57,28 +53,7 @@
     </system>
   </component>
   <component name="FileEditorManager">
-    <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="example.groovy" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/jobdsl/example.groovy">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="68">
-              <caret line="4" column="0" lean-forward="false" selection-start-line="4" selection-start-column="0" selection-end-line="4" selection-end-column="0" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="workspace.xml" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/.idea/workspace.xml">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-76">
-              <caret line="975" column="16" lean-forward="false" selection-start-line="975" selection-start-column="16" selection-end-line="975" selection-end-column="16" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-    </leaf>
+    <leaf SIDE_TABS_SIZE_LIMIT_KEY="300" />
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -306,7 +281,7 @@
     </option>
     <option name="modificationStamps">
       <map>
-        <entry key="$PROJECT_DIR$" value="1512601375000" />
+        <entry key="$PROJECT_DIR$" value="1512601791000" />
         <entry key="$PROJECT_DIR$/build.gradle" value="2097226150" />
       </map>
     </option>
@@ -667,6 +642,23 @@
               <item name="riscv-ci" type="b2602c69:ProjectViewProjectNode" />
               <item name="riscv-ci" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
             </path>
+            <path>
+              <item name="riscv-ci" type="b2602c69:ProjectViewProjectNode" />
+              <item name="riscv-ci" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="riscv-ci" type="b2602c69:ProjectViewProjectNode" />
+              <item name="riscv-ci" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="jobdsl" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
+            </path>
+            <path>
+              <item name="riscv-ci" type="b2602c69:ProjectViewProjectNode" />
+              <item name="riscv-ci" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
+            </path>
           </expand>
           <select />
         </subPane>
@@ -787,7 +779,7 @@
     </configuration>
   </component>
   <component name="SbtLocalSettings">
-    <option name="lastUpdateTimestamp" value="1512601668950" />
+    <option name="lastUpdateTimestamp" value="1512601905835" />
     <option name="externalProjectsViewState">
       <projects_view />
     </option>
@@ -902,7 +894,7 @@
     <entry file="file://$PROJECT_DIR$/.idea/workspace.xml">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-76">
-          <caret line="975" column="16" lean-forward="false" selection-start-line="975" selection-start-column="16" selection-end-line="975" selection-end-column="16" />
+          <caret line="949" column="16" lean-forward="false" selection-start-line="949" selection-start-column="16" selection-end-line="949" selection-end-column="16" />
           <folding />
         </state>
       </provider>

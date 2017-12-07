@@ -2,7 +2,15 @@ class Builder {
     static github(dslFactory, jobName, ownerAndTarget) {
         dslFactory.job(jobName) {
             scm {
-                github(ownerAndTarget)
+                git {
+                    remote { github(ownerAndTarget) }
+                    branches('master')
+                    extensions {
+                        submoduleOptions {
+                            recursive(true)
+                        }
+                    }
+                }
             }
             steps {
                 shell('/bin/true')

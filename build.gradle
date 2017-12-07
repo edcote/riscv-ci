@@ -1,49 +1,72 @@
-// See: https://github.com/heremaps/gradle-jenkins-jobdsl-plugin/blob/master/example/build.gradle
+apply plugin: 'groovy'
 
-buildscript {
-    ext.jenkinsJobdslPluginVersion = '2.1.1'
+ext {
+    jobDslVersion = '1.66'
+    jenkinsVersion = '2.92'
+}
 
-    repositories {
-        maven {
-            url 'https://plugins.gradle.org/m2'
+sourceSets {
+    jobs {
+        groovy {
+            srcDirs 'jobs'
         }
-
-        maven {
-            url 'https://repo.jenkins-ci.org/releases/'
-        }
-    }
-
-    dependencies {
-        classpath "com.here.gradle.plugins:gradle-jenkins-jobdsl-plugin:${jenkinsJobdslPluginVersion}"
     }
 }
 
-apply plugin: 'com.here.jobdsl'
-
 repositories {
-    jcenter()
-
     maven {
         url 'https://plugins.gradle.org/m2'
-    }
-
-    maven {
         url 'https://repo.jenkins-ci.org/releases/'
+    }
+    jcenter()
+}
+
+configurations {
+    testPlugins {}
+
+    // see JENKINS-45512
+    testCompile {
+        exclude group: 'xalan'
+        exclude group: 'xerces'
     }
 }
 
 dependencies {
-    compile "com.here.gradle.plugins:gradle-jenkins-jobdsl-plugin:${jenkinsJobdslPluginVersion}"
+    testCompile 'org.spockframework:spock-core:1.1-groovy-2.4'
+
+    // Jenkins test harness dependencies
+    testCompile('org.jenkins-ci.main:jenkins-test-harness:2.32') {
+        exclude(module: 'org-netbeans-insane')
+    }
+    testCompile "org.jenkins-ci.main:jenkins-war:2.92"
+//    testCompile "org.jenkins-ci.main:jenkins-war:${jenkinsVersion}:war-for-test@jar"
+
+    // Job DSL plugin including plugin dependencies
+    testCompile "org.jenkins-ci.plugins:job-dsl:${jobDslVersion}"
+    testCompile "org.jenkins-ci.plugins:job-dsl:${jobDslVersion}@jar"
+    testCompile 'org.jenkins-ci.plugins:structs:1.6@jar'
+
+    // plugins to install in test instance
+    testPlugins 'org.jenkins-ci.plugins:ghprb:1.31.4'
+    testPlugins 'com.coravy.hudson.plugins.github:github:1.19.0'
 }
 
-jobdsl {
-    servers {
-        production {
-            jenkinsUrl = 'http://35.227.165.176:8080/'
-            jenkinsUser = 'edc'
-            jenkinsApiToken = 'e81141b8bf01b8844f35f95edd286a10'
-        }
+task resolveTestPlugins(type: Copy) {
+    from configurations.testPlugins
+    into new File(sourceSets.test.output.resourcesDir, 'test-dependencies')
+    include '*.hpi'
+    include '*.jpi'
+
+    doLast {
+        def baseNames = source.collect { it.name[0..it.name.lastIndexOf('.') - 1] }
+        new File(destinationDir, 'index').setText(baseNames.join('\n'), 'UTF-8')
     }
 }
 
+test {
+    dependsOn tasks.resolveTestPlugins
+    inputs.files sourceSets.jobs.groovy.srcDirs
 
+    // set build directory for Jenkins test harness, JENKINS-26331
+    systemProperty 'buildDirectory', project.buildDir.absolutePath
+}

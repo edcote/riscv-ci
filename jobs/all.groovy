@@ -4,9 +4,9 @@ class Builder {
             scm {
                 github(ownerAndTarget)
             }
-        }
-        steps {
-            shell('/bin/true')
+            steps {
+                shell('/bin/true')
+            }
         }
     }
 }

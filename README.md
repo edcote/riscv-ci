@@ -12,13 +12,12 @@ Use the following to install Jenkins on Ubuntu.
     apt-get install jenkins
     service jenkins restart
     
-Here is a list of plugins. FIXME: need method to automatically install these.
+Here is a list of plugins. _FIXME_ find method to automatically install these.
 
-https://plugins.jenkins.io/job-dsl
-https://plugins.jenkins.io/git
-https://plugins.jenkins.io/github
-https://plugins.jenkins.io/authorize-project
-+ many others
+* [job-dsl](https://plugins.jenkins.io/job-dsl)
+* [git](https://plugins.jenkins.io/git)
+* [github](https://plugins.jenkins.io/github)
+* [authorize-project](https://plugins.jenkins.io/authorize-project
 
 ### [Job DSL](https://wiki.jenkins.io/display/JENKINS/Job+DSL+Plugin)
 
@@ -28,3 +27,5 @@ This plugin is used Jenkins jobs (different than pipelines) using Groovy scripts
     gradle build
 
 A seed job in Jenkins is required to generate the revision-controlled jobs.  More information [here](https://github.com/jenkinsci/job-dsl-plugin/wiki/Tutorial---Using-the-Jenkins-Job-DSL).
+
+See [JENKINS-43509](https://issues.jenkins-ci.org/browse/JENKINS-43509) for info about authentication.

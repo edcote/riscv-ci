@@ -1,6 +1,7 @@
 apply plugin: 'groovy'
 
 ext {
+    // these values must match the target installation
     jobDslVersion = '1.66'
     jenkinsVersion = '2.92'
 }
@@ -9,6 +10,7 @@ sourceSets {
     jobs {
         groovy {
             srcDirs 'jobs'
+            compileClasspath += main.compileClasspath
         }
     }
 }
@@ -16,7 +18,7 @@ sourceSets {
 repositories {
     maven {
         url 'https://plugins.gradle.org/m2'
-        url 'https://repo.jenkins-ci.org/releases/'
+        url 'https://repo.jenkins-ci.org/public'
     }
     jcenter()
 }
@@ -44,11 +46,15 @@ dependencies {
     // Job DSL plugin including plugin dependencies
     testCompile "org.jenkins-ci.plugins:job-dsl:${jobDslVersion}"
     testCompile "org.jenkins-ci.plugins:job-dsl:${jobDslVersion}@jar"
-    testCompile 'org.jenkins-ci.plugins:structs:1.6@jar'
+    testCompile 'org.jenkins-ci.plugins:structs:1.10@jar'
 
     // plugins to install in test instance
-    testPlugins 'org.jenkins-ci.plugins:ghprb:1.31.4'
-    testPlugins 'com.coravy.hudson.plugins.github:github:1.19.0'
+
+    // search here --> gghttps://repo.jenkins-ci.org/webapp/#/home
+    testPlugins 'org.jenkins-ci.plugins:ghprb:1.39.0'
+    //testPlugins 'org.jenkins-ci.plugins:github:1.28.1@jar'
+    testPlugins 'com.coravy.hudson.plugins.github:github:1.28.1'
+    //           ^^^ ???
 }
 
 task resolveTestPlugins(type: Copy) {

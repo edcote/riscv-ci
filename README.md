@@ -17,9 +17,9 @@ Here is a list of plugins. _FIXME_ find method to automatically install these.
 * [job-dsl](https://plugins.jenkins.io/job-dsl)
 * [git](https://plugins.jenkins.io/git)
 * [github](https://plugins.jenkins.io/github)
-* [authorize-project](https://plugins.jenkins.io/authorize-project
+* [authorize-project](https://plugins.jenkins.io/authorize-project)
 
-### [Job DSL](https://wiki.jenkins.io/display/JENKINS/Job+DSL+Plugin)
+### Job DSL Plugin
 
 This plugin is used Jenkins jobs (different than pipelines) using Groovy scripts.  These scripts are revision controlled and unit tested in this repository.  Use `gradle` to run these unit tests.
 

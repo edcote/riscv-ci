@@ -6,18 +6,24 @@
 
 Information about automated information: https://blog.thesparktree.com/you-dont-know-jenkins-part-1
 
+### Your API Token
+
+From: https://wiki.jenkins.io/display/JENKINS/Authenticating+scripted+clients
+
+The API token is available in your personal configuration page. Click your name on the top right corner on every page, then click "Configure" to see your API token.
+
+# OLD MATERIAL
+
 ### [Job DSL](https://wiki.jenkins.io/display/JENKINS/Job+DSL+Plugin)
 
 Used to create Jenkins jobs (different than pipelines) using scripts.
 
-Getting started example: https://github.com/sheehan/job-dsl-gradle-example.  The structure of the example has been copied over to this repo.
+https://github.com/jenkinsci/job-dsl-plugin/wiki/Tutorial---Using-the-Jenkins-Job-DSL
 
 Be sure to set JAVA_HOME before running gradle: `export JAVA_HOME=$(readlink -f /usr/bin/java | sed "s:jre/bin/java::")`
 
     cd riscv-ci
     gradle test
-
-# OLD MATERIAL
 
 Primary reference:  [Linux/RISC-V installation manual](https://github.com/riscv/riscv-tools#linuxman). Note the distinction between linux and newlib toolchain.
 

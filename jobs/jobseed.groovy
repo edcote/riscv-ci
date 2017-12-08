@@ -1,11 +1,8 @@
 class Builder {
-    static github(dslFactory, name, ownerAndTarget, type) {
-        def jobName = "$name-$type"
-        def scriptFile = "${name}_${type}.sh"
+    static pipeline(dslFactory, pipelineName, ownerAndTarget) {
+        println("Building Jenkins job'$pipelineName'")
 
-        println("Building job '$jobName'; uses '$scriptFile'")
-
-        dslFactory.job(jobName) {
+        dslFactory.job(pipelineName) {
             scm {
                 git {
                     remote { github(ownerAndTarget) }
@@ -17,6 +14,16 @@ class Builder {
                     }
                 }
             }
+        }
+    }
+
+    static step(dslFactory, pipelineName, pipelineStep) {
+        def jobName = "${pipelineName}-${pipelineStep}"
+        def scriptFile = "${pipelineName}_${jobName}.sh"
+
+        println("Building Jenkins job '$jobName'; uses '$scriptFile'")
+
+        dslFactory.job(jobName) {
             steps {
                 shell('cd $WORKSPACE/scripts && ' + scriptFile)
             }
@@ -24,12 +31,21 @@ class Builder {
     }
 }
 
-["build", "test", "deploy"].each {
-    Builder.github(this, 'pk', 'riscv/riscv-pk', it)
-    Builder.github(this, 'fesvr', 'riscv/riscv-fesvr', it)
-    Builder.github(this, 'spike', 'riscv/riscv-isa-sim', it)
-    Builder.github(this, 'qemu', 'riscv/riscv-qemu', it)
-    Builder.github(this, 'tests', 'riscv/riscv-tests', it)
-    Builder.github(this, 'rocketchip', 'freechipsproject/rocket-chip', it)
-    Builder.github(this, 'toolchain', 'riscv/riscv-gnu-toolchain', it)
+def jobspec = [['pk', 'riscv/riscv-pk'],
+               ['fesvr', 'riscv/riscv-fesvr'],
+               ['spike', 'riscv/riscv-isa-sim'],
+               ['qemu', 'riscv/riscv-qemu'],
+               ['tests', 'riscv/riscv-tests'],
+               ['rocketchip', 'freechipsproject/rocket-chip'],
+               ['toolchain', 'riscv/riscv-gnu-toolchain']
+]
+
+// all pipeline jobs
+jobspec.each { Builder.pipeline(this, it[0], it[1]) }
+
+// all pipeline steps for each pipeline
+jobspec.each { j ->
+    ["build", "test", "deploy"].each {
+        Builder.step(this, j[0], it)
+    }
 }

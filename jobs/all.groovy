@@ -1,6 +1,6 @@
 class Builder {
     static github(dslFactory, jobName, ownerAndTarget) {
-        dslFactory.job(jobName) {
+        dslFactory.buildFlowJob(jobName) {
             scm {
                 git {
                     remote { github(ownerAndTarget) }

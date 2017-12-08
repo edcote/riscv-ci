@@ -1,6 +1,9 @@
 class Builder {
-    static github(dslFactory, jobName, ownerAndTarget) {
-        println("Building github job $jobName")
+    static github(dslFactory, name, ownerAndTarget, type) {
+        def jobName = "$name-$type"
+        def scriptFile = "${name}_${type}.sh"
+
+        println("Building job '$jobName'; uses '$scriptFile'")
 
         dslFactory.job(jobName) {
             scm {
@@ -14,21 +17,19 @@ class Builder {
                     }
                 }
             }
-            triggers {
-                githubPush()
-            }
             steps {
-                shell("echo Hello, World!")
+                shell('cd $WORKSPACE/scripts && ' + scriptFile)
             }
         }
     }
 }
 
-Builder.github(this, 'pk', 'riscv/riscv-pk')
-Builder.github(this, 'fesvr', 'riscv/riscv-fesvr')
-Builder.github(this, 'spike', 'riscv/riscv-isa-sim')
-Builder.github(this, 'qemu', 'riscv/riscv-qemu')
-Builder.github(this, 'tests', 'riscv/riscv-tests')
-Builder.github(this, 'rocketchip', 'freechipsproject/rocket-chip')
-Builder.github(this, 'toolchain', 'riscv/riscv-gnu-toolchain')
-
+["build", "test", "deploy"].each {
+    Builder.github(this, 'pk', 'riscv/riscv-pk', it)
+    Builder.github(this, 'fesvr', 'riscv/riscv-fesvr', it)
+    Builder.github(this, 'spike', 'riscv/riscv-isa-sim', it)
+    Builder.github(this, 'qemu', 'riscv/riscv-qemu', it)
+    Builder.github(this, 'tests', 'riscv/riscv-tests', it)
+    Builder.github(this, 'rocketchip', 'freechipsproject/rocket-chip', it)
+    Builder.github(this, 'toolchain', 'riscv/riscv-gnu-toolchain', it)
+}

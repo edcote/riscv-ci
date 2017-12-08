@@ -38,7 +38,7 @@ class Builder {
             filterBuildQueue()
             filterExecutors()
             jobs {
-                jobNames.each { name(it) }
+                jobNames.each { name("${pipelineName}-${it}") }
                 //regex("/$pipelineName-.*/")
             }
 //            jobFilters {

@@ -1,16 +1,18 @@
 class Builder {
     static github(dslFactory, jobName, ownerAndTarget) {
+        println("Building github job $jobName")
+
         dslFactory.pipelineJob(jobName) {
             scm {
-//                git {
-//                    remote { github(ownerAndTarget) }
-//                    branches('master')
-//                    extensions {
-//                        submoduleOptions {
-//                            recursive(true)
-//                        }
-//                    }
-//                }
+                git {
+                    remote { github(ownerAndTarget) }
+                    branches('master')
+                    extensions {
+                        submoduleOptions {
+                            recursive(false)
+                        }
+                    }
+                }
             }
             steps {
                shell('echo $WORKSPACE/scripts/'+"${jobName}.sh")

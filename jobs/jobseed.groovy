@@ -1,8 +1,34 @@
 class Builder {
-    static pipeline(dslFactory, pipelineName, ownerAndTarget) {
+    static top(dslFactory, jobSpec) {
+        println("Building Jenkins top pipeline")
+
+        dslFactory.pipelineJob("top") {
+            scm {
+                git {
+                    remote { github("edcote/riscv-ci") }
+                    branches('develop')
+                }
+            }
+            //
+            definition {
+                def dsl = []
+                for (j in jobSpec) {
+                    dsl += "stage(${j[0]}) { build job: '${j[0]}', parameters: [string(name: 'RISCV_CI', value: '\$WORKSPACE')] }"
+                }
+                cps {
+                    script(dsl.join('\n'))
+                }
+            }
+        }
+    }
+
+    static pipeline(dslFactory, pipelineName, ownerAndTarget, stepNames) {
         println("Building Jenkins job'$pipelineName'")
 
-        dslFactory.job(pipelineName) {
+        dslFactory.pipelineJob(pipelineName) {
+            parameters {
+                stringParam("RISCV_CI")
+            }
             scm {
                 git {
                     remote { github(ownerAndTarget) }
@@ -12,6 +38,16 @@ class Builder {
                             recursive(false)
                         }
                     }
+                }
+            }
+            definition {
+                // inception, baby!
+                def dsl = []
+                for (s in stepNames) {
+                    dsl += "stage($s) { build job: '$pipelineName-$s', parameters: [string(name: 'RISCV_CI', value: '\$RISCV_CI')] }"
+                }
+                cps {
+                    script(dsl.join("\n"))
                 }
             }
         }
@@ -28,6 +64,7 @@ class Builder {
                 stringParam("RISCV_CI")
             }
             steps {
+                shell('printf "$WORKSPACE\n$RISCV_CI\n')
                 shell('cd $RISCV_CI/scripts && ' + scriptFile)
             }
         }
@@ -42,13 +79,7 @@ class Builder {
             filterExecutors()
             jobs {
                 jobNames.each { name("${pipelineName}-${it}") }
-                //regex("/$pipelineName-.*/")
             }
-//            jobFilters {
-//                status {
-//                    status(Status.UNSTABLE)
-//                }
-//            }
             columns {
                 status()
                 weather()
@@ -62,7 +93,7 @@ class Builder {
     }
 }
 
-def jobspec = [['pk', 'riscv/riscv-pk'],
+def jobSpec = [['pk', 'riscv/riscv-pk'],
                ['fesvr', 'riscv/riscv-fesvr'],
                ['spike', 'riscv/riscv-isa-sim'],
                ['qemu', 'riscv/riscv-qemu'],
@@ -71,17 +102,25 @@ def jobspec = [['pk', 'riscv/riscv-pk'],
                ['toolchain', 'riscv/riscv-gnu-toolchain']
 ]
 
-// all pipeline jobs
-jobspec.each { Builder.pipeline(this, it[0], it[1]) }
 
 def stepNames = ["build", "test", "deploy"]
 
-// views for each pipeline
-jobspec.each { Builder.view(this, it[0], stepNames) }
+// top pipeline
+Builder.top(this, jobSpec)
 
-// all pipeline steps for each pipeline
-jobspec.each { j ->
+// pipeline job for each 'jobspec'
+jobSpec.each {
+    Builder.pipeline(this, it[0], it[1], stepNames)
+}
+
+
+// for each pipeline, all pipeline steps
+jobSpec.each { j ->
     stepNames.each {
         Builder.step(this, j[0], it)
     }
 }
+
+// views for each pipeline
+jobSpec.each { Builder.view(this, it[0], stepNames) }
+

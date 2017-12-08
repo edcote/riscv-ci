@@ -3,9 +3,6 @@ class Builder {
         println("Building Jenkins top pipeline")
 
         dslFactory.pipelineJob("top") {
-            parameters {
-                stringParam("RISCV_CI", "\$WORKSPACE")
-            }
             scm {
                 git {
                     remote { github("edcote/riscv-ci") }
@@ -18,7 +15,7 @@ class Builder {
                     dsl += "stage('${j[0]}') { sh('echo \$WORKSPACE -- \$RISCV_CI') }"
                 }
                 cps {
-                    script("${dsl.join('\n')}")
+                    script("node { withEnv([RISCV_CI=\${env.WORKSPACE}]) { ${dsl.join('\n')} } }")
                 }
             }
         }
@@ -28,9 +25,6 @@ class Builder {
         println("Building Jenkins job'$pipelineName'")
 
         dslFactory.pipelineJob(pipelineName) {
-            parameters {
-                stringParam("RISCV_CI")
-            }
             scm {
                 git {
                     remote { github(ownerAndTarget) }
@@ -46,10 +40,10 @@ class Builder {
                 // inception, baby!
                 def dsl = []
                 for (s in stepNames) {
-                    dsl += "stage('$s') { build job: '$pipelineName-$s', parameters: [string(name: 'RISCV_CI', value: '\${params.RISCV_CI}')] }"
+                    dsl += "stage('$s}') { sh('echo \$WORKSPACE -- \$RISCV_CI') }"
                 }
                 cps {
-                    script(dsl.join("\n"))
+                    script("node { withEnv([RISCV_CI=\$env.RISCV_CI]) { ${dsl.join("\n")} } }")
                 }
             }
         }

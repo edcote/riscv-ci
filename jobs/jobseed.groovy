@@ -3,6 +3,9 @@ class Builder {
         println("Building Jenkins top pipeline")
 
         dslFactory.pipelineJob("top") {
+            parameters {
+                stringParam("RISCV_CI", "\${WORKSPACE}")
+            }
             scm {
                 git {
                     remote { github("edcote/riscv-ci") }
@@ -12,7 +15,7 @@ class Builder {
             definition {
                 def dsl = []
                 for (j in jobSpec) {
-                    dsl += "stage('${j[0]}') { build job: '${j[0]}', parameters: [string(name: 'RISCV_CI', value: '\${env.WORKSPACE}')] }"
+                    dsl += "stage('${j[0]}') { build job: '${j[0]}', parameters: [string(name: 'RISCV_CI', value: '\${params.RISCV_CI}')] }"
                 }
                 cps {
                     script("agent none\n" + dsl.join('\n'))

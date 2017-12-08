@@ -1,6 +1,6 @@
 class Builder {
     static github(dslFactory, jobName, ownerAndTarget) {
-        dslFactory.buildFlowJob(jobName) {
+        dslFactory.pipelineJob(jobName) {
             scm {
                 git {
                     remote { github(ownerAndTarget) }
@@ -13,7 +13,7 @@ class Builder {
                 }
             }
             steps {
-                shell('/bin/true')
+               shell('echo HELLO')
             }
         }
     }

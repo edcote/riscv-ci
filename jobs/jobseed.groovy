@@ -19,7 +19,7 @@ class Builder {
 
     static step(dslFactory, pipelineName, pipelineStep) {
         def jobName = "${pipelineName}-${pipelineStep}"
-        def scriptFile = "${pipelineName}_${jobName}.sh"
+        def scriptFile = "${pipelineName}_${pipelineStep}.sh"
 
         println("Building Jenkins job '$jobName'; uses '$scriptFile'")
 
@@ -30,7 +30,7 @@ class Builder {
         }
     }
 
-    static view(viewFactory, pipelineName) {
+    static view(viewFactory, pipelineName, jobNames) {
         println("Building Jenkins view '$pipelineName'")
 
         viewFactory.listView(pipelineName) {
@@ -38,7 +38,8 @@ class Builder {
             filterBuildQueue()
             filterExecutors()
             jobs {
-                regex("/$pipelineName-.*/")
+                jobNames.each { name(it) }
+                //regex("/$pipelineName-.*/")
             }
 //            jobFilters {
 //                status {
@@ -70,12 +71,14 @@ def jobspec = [['pk', 'riscv/riscv-pk'],
 // all pipeline jobs
 jobspec.each { Builder.pipeline(this, it[0], it[1]) }
 
+def stepNames = ["build", "test", "deploy"]
+
 // views for each pipeline
-jobspec.each { Builder.view(this, it[0]) }
+jobspec.each { Builder.view(this, it[0], stepNames) }
 
 // all pipeline steps for each pipeline
 jobspec.each { j ->
-    ["build", "test", "deploy"].each {
+    stepNames.each {
         Builder.step(this, j[0], it)
     }
 }

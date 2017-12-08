@@ -2,7 +2,7 @@ class Builder {
     static github(dslFactory, jobName, ownerAndTarget) {
         println("Building github job $jobName")
 
-        dslFactory.pipelineJob(jobName) {
+        dslFactory.job(jobName) {
             scm {
                 git {
                     remote { github(ownerAndTarget) }
@@ -14,8 +14,11 @@ class Builder {
                     }
                 }
             }
+            triggers {
+                githubPush()
+            }
             steps {
-               shell('echo $WORKSPACE/scripts/'+"${jobName}.sh")
+                shell("echo Hello, World!")
             }
         }
     }
@@ -28,3 +31,4 @@ Builder.github(this, 'qemu', 'riscv/riscv-qemu')
 Builder.github(this, 'tests', 'riscv/riscv-tests')
 Builder.github(this, 'rocketchip', 'freechipsproject/rocket-chip')
 Builder.github(this, 'toolchain', 'riscv/riscv-gnu-toolchain')
+

@@ -9,15 +9,13 @@ class Builder {
                     branches('develop')
                 }
             }
-            //
             definition {
-                def workspace = pwd()
                 def dsl = []
                 for (j in jobSpec) {
-                    dsl += "stage('${j[0]}') { build job: '${j[0]}', parameters: [string(name: 'RISCV_CI', value: '$workspace')] }"
+                    dsl += "stage('${j[0]}') { build job: '${j[0]}', parameters: [string(name: 'RISCV_CI', value: '\${env.WORKSPACE}')] }"
                 }
                 cps {
-                    script(dsl.join('\n'))
+                    script("agent none\n" + dsl.join('\n'))
                 }
             }
         }
@@ -45,10 +43,10 @@ class Builder {
                 // inception, baby!
                 def dsl = []
                 for (s in stepNames) {
-                    dsl += "stage('$s') { build job: '$pipelineName-$s', parameters: [string(name: 'RISCV_CI', value: '\$RISCV_CI')] }"
+                    dsl += "stage('$s') { build job: '$pipelineName-$s', parameters: [string(name: 'RISCV_CI', value: '\${params.RISCV_CI}')] }"
                 }
                 cps {
-                    script(dsl.join("\n"))
+                    script("agent none\n" + dsl.join("\n"))
                 }
             }
         }
@@ -112,7 +110,6 @@ Builder.top(this, jobSpec)
 jobSpec.each {
     Builder.pipeline(this, it[0], it[1], stepNames)
 }
-
 
 // for each pipeline, all pipeline steps
 jobSpec.each { j ->

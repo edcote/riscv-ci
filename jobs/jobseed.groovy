@@ -15,7 +15,7 @@ class Builder {
             definition {
                 def dsl = []
                 for (j in jobSpec) {
-                    dsl += "stage('${j[0]}') { build job: '${j[0]}', parameters: [string(name: 'RISCV_CI', value: '\${params.RISCV_CI}')] }"
+                    dsl += "stage('${j[0]}') { build job: '${j[0]}', parameters: [string(name: 'RISCV_CI', value: '\${env.RISCV_CI}')] }"
                 }
                 cps {
                     script(dsl.join('\n'))
@@ -46,7 +46,7 @@ class Builder {
                 // inception, baby!
                 def dsl = []
                 for (s in stepNames) {
-                    dsl += "stage('$s') { build job: '$pipelineName-$s', parameters: [string(name: 'RISCV_CI', value: '\${params.RISCV_CI}')] }"
+                    dsl += "stage('$s') { build job: '$pipelineName-$s', parameters: [string(name: 'RISCV_CI', value: '\${env.RISCV_CI}')] }"
                 }
                 cps {
                     script(dsl.join("\n"))

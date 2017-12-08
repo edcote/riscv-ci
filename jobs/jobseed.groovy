@@ -4,7 +4,7 @@ class Builder {
 
         dslFactory.pipelineJob("top") {
             parameters {
-                stringParam("RISCV_CI", "\${WORKSPACE}")
+                stringParam("RISCV_CI", "\$WORKSPACE")
             }
             scm {
                 git {
@@ -63,11 +63,11 @@ class Builder {
 
         dslFactory.job(jobName) {
             parameters {
-                stringParam("RISCV_CI")
+                stringParam("RISCV_CI", "you/did/not/set/me")
             }
             steps {
                 shell('printf "$WORKSPACE\\n$RISCV_CI\\n"')
-                shell('cd $RISCV_CI/scripts && ' + scriptFile)
+                shell("cd ${env.RISCV_CI}/scripts/ && ./scriptFile")
             }
         }
     }

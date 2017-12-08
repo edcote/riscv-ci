@@ -24,8 +24,11 @@ class Builder {
         println("Building Jenkins job '$jobName'; uses '$scriptFile'")
 
         dslFactory.job(jobName) {
+            parameters {
+                stringParam("RISCV_CI")
+            }
             steps {
-                shell('cd $WORKSPACE/scripts && ' + scriptFile)
+                shell('cd $RISCV_CI/scripts && ' + scriptFile)
             }
         }
     }

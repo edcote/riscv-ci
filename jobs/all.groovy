@@ -13,7 +13,7 @@ class Builder {
 //                }
             }
             steps {
-               shell('echo $WORKSPACE/scripts/'+"$jobName.sh")
+               shell('echo $WORKSPACE/scripts/'+"${jobName}.sh")
             }
         }
     }

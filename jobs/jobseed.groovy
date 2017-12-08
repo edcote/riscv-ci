@@ -12,10 +12,16 @@ class Builder {
             definition {
                 def dsl = []
                 for (j in jobSpec) {
-                    dsl += "stage('${j[0]}') { sh('echo \$WORKSPACE -- \$RISCV_CI') }"
+                    dsl += "        stage('${j[0]}') { sh('echo \$WORKSPACE -- \$RISCV_CI') }"
                 }
                 cps {
-                    script("node { withEnv([RISCV_CI=\${env.WORKSPACE}]) { ${dsl.join('\n')} } }")
+                    script("""
+node {
+    withEnv(["RISCV_CI=\${env.WORKSPACE}\"]) {
+${dsl.join('\n')}
+    }
+}
+""")
                 }
             }
         }
@@ -43,24 +49,14 @@ class Builder {
                     dsl += "stage('$s}') { sh('echo \$WORKSPACE -- \$RISCV_CI') }"
                 }
                 cps {
-                    script("node { withEnv([RISCV_CI=\$env.RISCV_CI]) { ${dsl.join("\n")} } }")
-                }
-            }
-        }
+                    script("""
+node {
+    withEnv(["RISCV_CI=\${env.RISCV_CI}"]) {
+        ${dsl.join("\n")}
     }
-
-    static step(dslFactory, pipelineName, pipelineStep) {
-        def jobName = "${pipelineName}-${pipelineStep}"
-        def scriptFile = "${pipelineName}_${pipelineStep}.sh"
-
-        println("Building Jenkins job '$jobName'; uses '$scriptFile'")
-
-        dslFactory.job(jobName) {
-            parameters {
-                stringParam("RISCV_CI", "you/did/not/set/me")
-            }
-            steps {
-                shell('/bin/true')
+}
+""")
+                }
             }
         }
     }
@@ -105,13 +101,6 @@ Builder.top(this, jobSpec)
 // pipeline job for each 'jobspec'
 jobSpec.each {
     Builder.pipeline(this, it[0], it[1], stepNames)
-}
-
-// for each pipeline, all pipeline steps
-jobSpec.each { j ->
-    stepNames.each {
-        Builder.step(this, j[0], it)
-    }
 }
 
 // views for each pipeline

@@ -64,7 +64,7 @@ class Builder {
                 stringParam("RISCV_CI")
             }
             steps {
-                shell('printf "$WORKSPACE\n$RISCV_CI\n')
+                shell('printf "$WORKSPACE\\n$RISCV_CI\\n')
                 shell('cd $RISCV_CI/scripts && ' + scriptFile)
             }
         }

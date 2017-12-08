@@ -2,18 +2,18 @@ class Builder {
     static github(dslFactory, jobName, ownerAndTarget) {
         dslFactory.pipelineJob(jobName) {
             scm {
-                git {
-                    remote { github(ownerAndTarget) }
-                    branches('master')
-                    extensions {
-                        submoduleOptions {
-                            recursive(true)
-                        }
-                    }
-                }
+//                git {
+//                    remote { github(ownerAndTarget) }
+//                    branches('master')
+//                    extensions {
+//                        submoduleOptions {
+//                            recursive(true)
+//                        }
+//                    }
+//                }
             }
             steps {
-               shell('echo HELLO')
+               shell('echo $WORKSPACE/scripts/'+"$jobName.sh")
             }
         }
     }

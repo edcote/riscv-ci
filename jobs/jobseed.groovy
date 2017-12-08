@@ -18,7 +18,7 @@ class Builder {
                     dsl += "stage('${j[0]}') { build job: '${j[0]}', parameters: [string(name: 'RISCV_CI', value: '\${params.RISCV_CI}')] }"
                 }
                 cps {
-                    script("agent none\n" + dsl.join('\n'))
+                    script(dsl.join('\n'))
                 }
             }
         }
@@ -49,7 +49,7 @@ class Builder {
                     dsl += "stage('$s') { build job: '$pipelineName-$s', parameters: [string(name: 'RISCV_CI', value: '\${params.RISCV_CI}')] }"
                 }
                 cps {
-                    script("agent none\n" + dsl.join("\n"))
+                    script(dsl.join("\n"))
                 }
             }
         }

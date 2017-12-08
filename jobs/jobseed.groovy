@@ -11,9 +11,10 @@ class Builder {
             }
             //
             definition {
+                def workspace = pwd()
                 def dsl = []
                 for (j in jobSpec) {
-                    dsl += "stage('${j[0]}') { build job: '${j[0]}', parameters: [string(name: 'RISCV_CI', value: '\$WORKSPACE')] }"
+                    dsl += "stage('${j[0]}') { build job: '${j[0]}', parameters: [string(name: 'RISCV_CI', value: '$workspace')] }"
                 }
                 cps {
                     script(dsl.join('\n'))

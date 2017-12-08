@@ -29,6 +29,33 @@ class Builder {
             }
         }
     }
+
+    static view(viewFactory, pipelineName) {
+        println("Building Jenkins view '$pipelineName'")
+
+        viewFactory.listView(pipelineName) {
+            description("All jobs for pipeline $pipelineName")
+            filterBuildQueue()
+            filterExecutors()
+            jobs {
+                regex("/$pipelineName-.*/")
+            }
+//            jobFilters {
+//                status {
+//                    status(Status.UNSTABLE)
+//                }
+//            }
+            columns {
+                status()
+                weather()
+                name()
+                lastSuccess()
+                lastFailure()
+                lastDuration()
+                buildButton()
+            }
+        }
+    }
 }
 
 def jobspec = [['pk', 'riscv/riscv-pk'],
@@ -42,6 +69,9 @@ def jobspec = [['pk', 'riscv/riscv-pk'],
 
 // all pipeline jobs
 jobspec.each { Builder.pipeline(this, it[0], it[1]) }
+
+// views for each pipeline
+jobspec.each { Builder.view(this, it[0]) }
 
 // all pipeline steps for each pipeline
 jobspec.each { j ->

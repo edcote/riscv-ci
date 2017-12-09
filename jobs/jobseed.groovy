@@ -12,16 +12,13 @@ class Builder {
             definition {
                 def dsl = []
                 for (j in jobSpec) {
-                    dsl += "        stage('${j[0]}') { sh('echo w:\$WORKSPACE -- r:\$RISCV_CI') }"
+//                    dsl += "        node { stage('${j[0]}') { sh('echo w:\$WORKSPACE -- r:\$RISCV_CI') }"
+                    dsl += 'node { stage("pk") { build (job: "pk", RISCV_CI:"${env.WORKSPACE}") } }'
+
                 }
                 cps {
-                    script("""
-node {
-    withEnv(["RISCV_CI=\${env.WORKSPACE}\"]) {
-${dsl.join('\n')}
-    }
-}
-""")
+                    script(dsl.join('\n'))
+
                 }
             }
         }
@@ -46,20 +43,15 @@ ${dsl.join('\n')}
                 // inception, baby!
                 def dsl = []
                 for (s in stepNames) {
-                    dsl += "        stage('$s') { sh('echo w:\$WORKSPACE -- r:\$RISCV_CI') }"
+                    dsl += "stage('$s') { sh('echo w:\$WORKSPACE -- r:\$RISCV_CI') }"
                 }
                 cps {
-                    script("""
-node {
-    withEnv(["RISCV_CI=\${env.RISCV_CI}"]) {
-        ${dsl.join("\n")}
-    }
-}
-""")
+                    script("node { ${dsl.join("\n")} }")
                 }
             }
         }
     }
+
 
     static view(viewFactory, pipelineName, jobNames) {
         println("Building Jenkins view '$pipelineName'")
@@ -82,6 +74,7 @@ node {
             }
         }
     }
+
 }
 
 def jobSpec = [['pk', 'riscv/riscv-pk'],

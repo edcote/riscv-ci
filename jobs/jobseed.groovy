@@ -13,7 +13,7 @@ class Builder {
                 def dsl = []
                 for (j in jobSpec) {
 //                    dsl += "        node { stage('${j[0]}') { sh('echo w:\$WORKSPACE -- r:\$RISCV_CI') }"
-                    dsl += 'node { stage("pk") { build (job: "pk", RISCV_CI:"${env.WORKSPACE}") } }'
+                    dsl += "node { stage('${j[0]}') { build (job: '${j[0]}', RISCV_CI:'\"\${env.WORKSPACE}\"') } }"
 
                 }
                 cps {

@@ -39,6 +39,9 @@ class Builder {
                     }
                 }
             }
+            parameters {
+                stringParam("RISCV_CI", "/you/must/set/me")
+            }
             definition {
                 // inception, baby!
                 def dsl = []

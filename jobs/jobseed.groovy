@@ -12,7 +12,7 @@ class Builder {
             definition {
                 def dsl = []
                 for (j in jobSpec) {
-                    dsl += "        stage('${j[0]}') { sh('echo \$WORKSPACE -- \$RISCV_CI') }"
+                    dsl += "        stage('${j[0]}') { sh('echo w:\$WORKSPACE -- r:\$RISCV_CI') }"
                 }
                 cps {
                     script("""
@@ -46,7 +46,7 @@ ${dsl.join('\n')}
                 // inception, baby!
                 def dsl = []
                 for (s in stepNames) {
-                    dsl += "stage('$s}') { sh('echo \$WORKSPACE -- \$RISCV_CI') }"
+                    dsl += "        stage('$s') { sh('echo w:\$WORKSPACE -- r:\$RISCV_CI') }"
                 }
                 cps {
                     script("""

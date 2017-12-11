@@ -38,7 +38,6 @@ class Builder {
                     scm {
                         github('edcote/riscv-ci', 'develop')
                     }
-                    //scriptPath("${myworkspace}/pipelines/master_pipeline.groovy")
                     scriptPath("./pipelines/master_pipeline.groovy")
                 }
             }
@@ -54,7 +53,7 @@ class Builder {
         // jdsl
         dslFactory.pipelineJob(name) {
             scm {
-                github(job['github']) {
+                git("http://github.com/" + job['github']) {
                     extensions {
                         submoduleOptions {
                             recursive(false)
@@ -69,11 +68,6 @@ class Builder {
                 cpsScm {
                     scm {
                         github('edcote/riscv-ci', 'develop')
-                        extensions {
-                            submoduleOptions {
-                                recursive(false)
-                            }
-                        }
                     }
                 }
                 scriptPath("./pipelines/${name}_pipeline.groovy")

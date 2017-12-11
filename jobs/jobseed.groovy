@@ -39,7 +39,7 @@ class Builder {
                     scm {
                         github('edcote/riscv-ci', 'develop')
                     }
-                    scriptPath('\${env[\'WORKSPACE\']}/pipelines/master_pipeline.groovy')
+                    scriptPath('\$\{WORKSPACE\}/pipelines/master_pipeline.groovy')
                     //scriptPath("pipelines/master_pipeline.groovy")
                 }
             }
@@ -77,7 +77,7 @@ class Builder {
                             }
                         }
                     }
-                    scriptPath("\${env['WORKSPACE']}/pipelines/${name}_pipeline.groovy")
+                    scriptPath("\$\{RISCV_CI\}/pipelines/${name}_pipeline.groovy")
                     //scriptPath("pipelines/${name}_pipeline.groovy")
                 }
             }

@@ -5,10 +5,8 @@ import hudson.*
 
 def jsonSlurper = new JsonSlurper()
 
-// for server ..
-hudson.FilePath workspace = hudson.model.Executor.currentExecutor().getCurrentWorkspace()
-Map jobSpec = jsonSlurper.parse(("${workspace}/jobs/jobspec.json" as File))
-// for testing ..
+hudson.FilePath myworkspace = hudson.model.Executor.currentExecutor().getCurrentWorkspace()
+Map jobSpec = jsonSlurper.parse(("${myworkspace}/jobs/jobspec.json" as File))
 //Map jobSpec = jsonSlurper.parse(("jobs/jobspec.json" as File))
 
 def build = new Builder()
@@ -39,7 +37,7 @@ class Builder {
                     scm {
                         github('edcote/riscv-ci', 'develop')
                     }
-                    scriptPath('\$\{WORKSPACE\}/pipelines/master_pipeline.groovy')
+                    scriptPath("${myworkspace}/pipelines/master_pipeline.groovy")
                     //scriptPath("pipelines/master_pipeline.groovy")
                 }
             }
@@ -77,7 +75,7 @@ class Builder {
                             }
                         }
                     }
-                    scriptPath("\$\{RISCV_CI\}/pipelines/${name}_pipeline.groovy")
+                    scriptPath("${myworkspace}/pipelines/${name}_pipeline.groovy")
                     //scriptPath("pipelines/${name}_pipeline.groovy")
                 }
             }

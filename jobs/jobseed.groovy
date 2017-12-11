@@ -12,9 +12,12 @@ class Builder {
             definition {
                 def dsl = []
                 for (j in jobSpec) {
-//                    dsl += "        node { stage('${j[0]}') { sh('echo w:\$WORKSPACE -- r:\$RISCV_CI') }"
-                    dsl += "node { stage('${j[0]}') { build (job: '${j[0]}', RISCV_CI:'\"\${env.WORKSPACE}\"') } }"
-
+                    dsl += """\
+node {
+    stage('${j[0]}') {
+        build job: '${j[0]}', parameters: [[\$class: 'StringParameterValue, name: 'RISCV_CI', value='"\${env.WORKSPACE}\"']]
+    }
+}"""
                 }
                 cps {
                     script(dsl.join('\n'))

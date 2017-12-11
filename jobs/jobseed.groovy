@@ -4,7 +4,7 @@ class Builder {
 
         // returns pipeline script that creates a Jenkins job
         def mkjob = { String j ->
-            "jobs['${j[0]}'] = { build job: '${j[0]}', parameters: [[\$class: 'StringParameterValue', name: 'RISCV_CI', value:\"\${env.WORKSPACE}\"]] }"
+            "jobs['${j}'] = { build job: '${j}', parameters: [[\$class: 'StringParameterValue', name: 'RISCV_CI', value:\"\${env.WORKSPACE}\"]] }"
         }
 
         // returns pipeline script that creates a parallel Jenkins node
@@ -30,7 +30,7 @@ parallel jobs
                     jobs += mkjob(j[0])
                 }
                 cps {
-                    script(jobs.join("\n"))
+                    script(mkparnode(jobs))
                 }
             }
         }

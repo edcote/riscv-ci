@@ -25,33 +25,31 @@ class Builder {
      */
     def masterJob(dslFactory) {
         // jdsl
-        dslFactory.pipelineJob("top") {
+        dslFactory.pipelineJob("Master") {
             scm {
-                git {
-                    remote { github("edcote/riscv-ci") }
-                    branches('develop')
-                }
+                github('edcote/riscv-ci', 'develop')
             }
             definition {
-                cps {
-                    //script(readFileFromWorkspace("pipeline/master_pipeline.groovy"))
+                cpsScm {
+                    scm {
+                        github('edcote/riscv-ci', 'develop')
+                    }
+                    scriptPath("pipelines/master_pipeline.groovy")
                 }
             }
         }
     }
 
-    /**
-     * Builds a Jenkins pipeline job using pipeline DSL.
-     * @param dslFactory
-     * @return N/A
-     */
+/**
+ * Builds a Jenkins pipeline job using pipeline DSL.
+ * @param dslFactory
+ * @return N/A
+ */
     def workerJob(dslFactory, name, job) {
         // jdsl
         dslFactory.pipelineJob(name) {
             scm {
-                git {
-                    remote { github(job['github']) }
-                    branches('master')
+                github(job['github'], 'develop') {
                     extensions {
                         submoduleOptions {
                             recursive(false)
@@ -63,34 +61,43 @@ class Builder {
                 stringParam("RISCV_CI", "/you/must/set/me")
             }
             definition {
-                cps {
-                    //script(readFileFromWorkspace("pipeline/${name}_pipeline.groovy"))
+                cpsScm {
+                    scm {
+                        github(job['github'], 'develop') {
+                            extensions {
+                                submoduleOptions {
+                                    recursive(false)
+                                }
+                            }
+                        }
+                    }
+                    scriptPath("pipelines/${name}_pipeline.groovy")
                 }
             }
         }
     }
 
-    /*
-    static view(viewFactory, pipelineName, jobNames) {
-        viewFactory.listView(pipelineName) {
-            description("All jobs for pipeline $pipelineName")
-            filterBuildQueue()
-            filterExecutors()
-            jobs {
-                jobNames.each { name("${pipelineName}-${it}") }
-            }
-            columns {
-                status()
-                weather()
-                name()
-                lastSuccess()
-                lastFailure()
-                lastDuration()
-                buildButton()
-            }
+/*
+static view(viewFactory, pipelineName, jobNames) {
+    viewFactory.listView(pipelineName) {
+        description("All jobs for pipeline $pipelineName")
+        filterBuildQueue()
+        filterExecutors()
+        jobs {
+            jobNames.each { name("${pipelineName}-${it}") }
+        }
+        columns {
+            status()
+            weather()
+            name()
+            lastSuccess()
+            lastFailure()
+            lastDuration()
+            buildButton()
         }
     }
+}
 
-    */
+*/
 
 }

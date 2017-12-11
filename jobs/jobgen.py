@@ -10,7 +10,7 @@ jobspec = json.load(open(jsonfile))
 jobs = []
 for job in jobspec:
     jobs.append(
-        "    jobs[{}] = {{ build job: [{}], parameters: [[$class: 'StringParameterValue', name: 'RISCV_CI', value:\"${{env.WORKSPACE}}\"]] }}".format(
+        "    jobs['{}'] = {{ build job: '{}', parameters: [[$class: 'StringParameterValue', name: 'RISCV_CI', value:\"${{env.WORKSPACE}}\"]] }}".format(
             job, job))
 
 f = open('../pipelines/master_pipeline.groovy', 'w')
@@ -30,13 +30,13 @@ node {{
 stage('Build') {{
     sh('echo WORKSPACE: $WORKSPACE')
     sh('echo RISCV_CI: $RISCV_CI')
-    script('"${{env.WORKSPACE}}"/pipelines/{}_build.groovy')
+    script("${{env.WORKSPACE}}"/pipelines/{}_build.groovy")
     sh('sleep 2s')
 }}        
 stage('Test') {{
     sh('echo WORKSPACE: $WORKSPACE')
     sh('echo RISCV_CI: $RISCV_CI')
-    script('"${{env.WORKSPACE}}"/pipelines/{}_test.groovy')
+    script("${{env.WORKSPACE}}"/pipelines/{}_test.groovy")
     sh('sleep 2s')
 }}
 }}

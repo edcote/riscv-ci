@@ -6,10 +6,10 @@ import hudson.*
 def jsonSlurper = new JsonSlurper()
 
 // for server ..
-//hudson.FilePath workspace = hudson.model.Executor.currentExecutor().getCurrentWorkspace()
-//Map jobSpec = jsonSlurper.parse(("${workspace}/jobs/jobspec.json" as File))
+hudson.FilePath workspace = hudson.model.Executor.currentExecutor().getCurrentWorkspace()
+Map jobSpec = jsonSlurper.parse(("${workspace}/jobs/jobspec.json" as File))
 // for testing ..
-Map jobSpec = jsonSlurper.parse(("jobs/jobspec.json" as File))
+//Map jobSpec = jsonSlurper.parse(("jobs/jobspec.json" as File))
 
 def build = new Builder()
 

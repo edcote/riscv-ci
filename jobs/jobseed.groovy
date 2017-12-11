@@ -1,22 +1,32 @@
+//-----------------------------------------------------------------------------
+
+import org.yaml.snakeyaml.Yaml
+
+Yaml parser = new Yaml()
+Map jobSpec = parser.load(("jobs/jobspec.yaml" as File).text)
+
+build = new Builder()
+
+build.bossJob(this, jobSpec)
+
+for (j in jobSpec) {
+    build.workerJob(this, j.key, j.value)
+}
+
+//jobSpec.each {
+//    build.view(this)
+//}
+
+//-----------------------------------------------------------------------------
+
+
 class Builder {
-    static top(dslFactory, jobSpec) {
-        println("Building Jenkins top pipeline")
-
-        // returns pipeline script that creates a Jenkins job
-        def mkjob = { String j ->
-            "jobs['${j}'] = { build job: '${j}', parameters: [[\$class: 'StringParameterValue', name: 'RISCV_CI', value:\"\${env.WORKSPACE}\"]] }"
-        }
-
-        // returns pipeline script that creates a parallel Jenkins node
-        def mkparnode = { n ->
-            """\
-node {
-def jobs = [:]
-${n.join('\n')}
-parallel jobs
-}"""
-        }
-
+    /**
+     * Builds a Jenkins master job using pipeline DSL.
+     * @param dslFactory
+     * @return N/A
+     */
+    def bossJob(dslFactory, jobSpec) {
         dslFactory.pipelineJob("top") {
             scm {
                 git {
@@ -27,7 +37,7 @@ parallel jobs
             definition {
                 def jobs = []
                 for (j in jobSpec) {
-                    jobs += mkjob(j[0])
+                    jobs += mkjob(j)
                 }
                 cps {
                     script(mkparnode(jobs))
@@ -36,30 +46,16 @@ parallel jobs
         }
     }
 
-    static pipeline(dslFactory, pipelineName, ownerAndTarget, stepNames) {
-        println("Building Jenkins job'$pipelineName'")
-
-        def mkstage = { n ->
-            """\
-    stage('$n') {
-        sh('echo WORKSPACE: \$WORKSPACE')
-        sh('echo RISCV_CI: \$RISCV_CI')
-        sh('sleep 15s')
-    }
-        """
-        }
-
-        def mkpipnode = { x ->
-            """\
-node {
-${x.join("\n")}
-}"""
-        }
-
-        dslFactory.pipelineJob(pipelineName) {
+    /**
+     * Builds a Jenkins pipeline job using pipeline DSL.
+     * @param dslFactory
+     * @return N/A
+     */
+    def workerJob(dslFactory, name, job) {
+        dslFactory.pipelineJob(name) {
             scm {
                 git {
-                    remote { github(ownerAndTarget) }
+                    remote { github(job['github']) }
                     branches('master')
                     extensions {
                         submoduleOptions {
@@ -74,18 +70,17 @@ ${x.join("\n")}
             definition {
                 // inception, baby!
                 def dsl = []
-                for (s in stepNames) {
-                    dsl += mkstage(s)
+                for (stage in ["build", "test", "deploy"]) {
+                    dsl += mkstage(stage)
                 }
                 cps {
-                    script(mkpipnode(dsl))
+                    script(mkpipenode(dsl))
                 }
-
             }
         }
     }
 
-
+    /*
     static view(viewFactory, pipelineName, jobNames) {
         println("Building Jenkins view '$pipelineName'")
 
@@ -107,27 +102,34 @@ ${x.join("\n")}
             }
         }
     }
-}
+    */
+    private def mkjob = { j ->
+        "jobs['$j'] = { build job: '$j', parameters: [[\$class: 'StringParameterValue', name: 'RISCV_CI', value:\"\${env.WORKSPACE}\"]] }"
+    }
 
-def jobSpec = [['pk', 'riscv/riscv-pk'],
-               ['fesvr', 'riscv/riscv-fesvr'],
-               ['spike', 'riscv/riscv-isa-sim'],
-               ['qemu', 'riscv/riscv-qemu'],
-               ['rocketchip', 'freechipsproject/rocket-chip'],
-               ['toolchain', 'riscv/riscv-gnu-toolchain']]
+    private def mkparnode = { n ->
+        """\
+node {
+def jobs = [:]
+${n.join('\n')}
+parallel jobs
+}"""
+    }
 
+    def mkstage = { s ->
+        """\
+    stage('$s') {
+        sh('echo WORKSPACE: \$WORKSPACE')
+        sh('echo RISCV_CI: \$RISCV_CI')
+        sh('sleep 15s')
+    }
+        """
+    }
 
-def stepNames = ["build", "test", "deploy"]
-
-// top pipeline
-Builder.top(this, jobSpec)
-
-// pipeline job for each 'jobspec'
-jobSpec.each {
-    Builder.pipeline(this, it[0], it[1], stepNames)
-}
-
-// views for each pipeline
-jobSpec.each {
-    Builder.view(this, it[0], stepNames)
+    def mkpipenode = { x ->
+        """\
+node {
+${x.join("\n")}
+}"""
+    }
 }

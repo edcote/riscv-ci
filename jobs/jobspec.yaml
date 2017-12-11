@@ -1,0 +1,13 @@
+"pk":
+    "github": riscv/riscv-pk
+"fesvr":
+    "github": riscv/riscv-fesvr
+"spike":
+    "github": riscv/riscv-isa-sim
+"qemu":
+    "github": riscv/riscv-qemu
+"rocketchip":
+    "github": freechipsproject/rocket-chip
+"toolchain":
+    "github": riscv/riscv-gnu-toolchain
+

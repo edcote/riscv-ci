@@ -29,7 +29,7 @@ class Builder {
      */
     def masterJob(dslFactory) {
         // jdsl
-        dslFactory.pipelineJob("Master") {
+        dslFactory.pipelineJob("master") {
             scm {
                 github('edcote/riscv-ci', 'develop')
             }

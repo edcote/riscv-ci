@@ -1,9 +1,10 @@
+import groovy.json.JsonSlurper
+
 //-----------------------------------------------------------------------------
 
-import org.yaml.snakeyaml.Yaml
+def jsonSlurper = new JsonSlurper()
 
-Yaml parser = new Yaml()
-Map jobSpec = parser.load(("jobs/jobspec.yaml" as File).text)
+Map jobSpec = jsonSlurper.parse(("jobs/jobspec.json" as File))
 
 build = new Builder()
 

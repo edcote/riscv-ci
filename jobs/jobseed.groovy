@@ -12,7 +12,7 @@ class Builder {
             definition {
                 def dsl = []
                 for (j in jobSpec) {
-                    dsl += "job['${j[0]}'] = { build job: '${j[0]}', parameters: [[\$class: 'StringParameterValue', name: 'RISCV_CI', value:\"\${env.WORKSPACE}\"]] }"
+                    dsl += "jobs['${j[0]}'] = { build job: '${j[0]}', parameters: [[\$class: 'StringParameterValue', name: 'RISCV_CI', value:\"\${env.WORKSPACE}\"]] }"
                 }
                 cps {
                     script("""\
@@ -20,8 +20,7 @@ node {
 def jobs = [:]
 ${dsl.join('\n')}
 parallel jobs
-}
-)""")
+}""")
                 }
             }
         }

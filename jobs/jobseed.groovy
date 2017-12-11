@@ -54,7 +54,7 @@ class Builder {
         // jdsl
         dslFactory.pipelineJob(name) {
             scm {
-                github(job['github'], 'develop') {
+                github(job['github']) {
                     extensions {
                         submoduleOptions {
                             recursive(false)
@@ -68,44 +68,16 @@ class Builder {
             definition {
                 cpsScm {
                     scm {
-                        github(job['github'], 'develop') {
-                            extensions {
-                                submoduleOptions {
-                                    recursive(false)
-                                }
+                        github('edcote/riscv-ci', 'develop')
+                        extensions {
+                            submoduleOptions {
+                                recursive(false)
                             }
                         }
                     }
-                    scriptPath("./pipelines/${name}_pipeline.groovy")
-                    //scriptPath("${myworkspace}/pipelines/${name}_pipeline.groovy")
                 }
+                scriptPath("./pipelines/${name}_pipeline.groovy")
             }
         }
     }
-
-/*
-static view(viewFactory, pipelineName, jobNames) {
-    viewFactory.listView(pipelineName) {
-        description("All jobs for pipeline $pipelineName")
-        filterBuildQueue()
-        filterExecutors()
-        jobs {
-            jobNames.each { name("${pipelineName}-${it}") }
-        }
-        columns {
-            status()
-            weather()
-            name()
-            lastSuccess()
-            lastFailure()
-            lastDuration()
-            buildButton()
-        }
-    }
 }
-
-*/
-
-}
-
-

@@ -21,6 +21,8 @@ for (j in jobSpec) {
  * Wrapper class for build definition jobs.
  */
 class Builder {
+    // FIXME: DNR
+    hudson.FilePath myworkspace = hudson.model.Executor.currentExecutor().getCurrentWorkspace()
     /**
      * Builds a Jenkins master job using pipeline DSL.
      * @param dslFactory

@@ -1,9 +1,14 @@
 import groovy.json.JsonSlurper
 
+import hudson.FilePath
+import hudson.*
 
 def jsonSlurper = new JsonSlurper()
 
-//Map jobSpec = jsonSlurper.parse(("${JENKINS_HOME}/workspace/${JOB_NAME}/jobs/jobspec.json" as File))
+// for server ..
+//hudson.FilePath workspace = hudson.model.Executor.currentExecutor().getCurrentWorkspace()
+//Map jobSpec = jsonSlurper.parse(("${workspace}/jobs/jobspec.json" as File))
+// for testing ..
 Map jobSpec = jsonSlurper.parse(("jobs/jobspec.json" as File))
 
 def build = new Builder()
@@ -34,7 +39,8 @@ class Builder {
                     scm {
                         github('edcote/riscv-ci', 'develop')
                     }
-                    scriptPath("pipelines/master_pipeline.groovy")
+                    scriptPath('\${env[\'WORKSPACE\']}/pipelines/master_pipeline.groovy')
+                    //scriptPath("pipelines/master_pipeline.groovy")
                 }
             }
         }
@@ -71,7 +77,8 @@ class Builder {
                             }
                         }
                     }
-                    scriptPath("pipelines/${name}_pipeline.groovy")
+                    scriptPath("\${env['WORKSPACE']}/pipelines/${name}_pipeline.groovy")
+                    //scriptPath("pipelines/${name}_pipeline.groovy")
                 }
             }
         }
@@ -101,3 +108,5 @@ static view(viewFactory, pipelineName, jobNames) {
 */
 
 }
+
+

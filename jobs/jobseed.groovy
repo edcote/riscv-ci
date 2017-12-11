@@ -2,6 +2,21 @@ class Builder {
     static top(dslFactory, jobSpec) {
         println("Building Jenkins top pipeline")
 
+        // returns pipeline script that creates a Jenkins job
+        def mkjob = { String j ->
+            "jobs['${j[0]}'] = { build job: '${j[0]}', parameters: [[\$class: 'StringParameterValue', name: 'RISCV_CI', value:\"\${env.WORKSPACE}\"]] }"
+        }
+
+        // returns pipeline script that creates a parallel Jenkins node
+        def mkparnode = { n ->
+            """\
+node {
+def jobs = [:]
+${n.join('\n')}
+parallel jobs
+}"""
+        }
+
         dslFactory.pipelineJob("top") {
             scm {
                 git {
@@ -10,17 +25,12 @@ class Builder {
                 }
             }
             definition {
-                def dsl = []
+                def jobs = []
                 for (j in jobSpec) {
-                    dsl += "jobs['${j[0]}'] = { build job: '${j[0]}', parameters: [[\$class: 'StringParameterValue', name: 'RISCV_CI', value:\"\${env.WORKSPACE}\"]] }"
+                    jobs += mkjob(j[0])
                 }
                 cps {
-                    script("""\
-node {
-def jobs = [:]
-${dsl.join('\n')}
-parallel jobs
-}""")
+                    script(jobs.join("\n"))
                 }
             }
         }
@@ -28,6 +38,23 @@ parallel jobs
 
     static pipeline(dslFactory, pipelineName, ownerAndTarget, stepNames) {
         println("Building Jenkins job'$pipelineName'")
+
+        def mkstage = { n ->
+            """\
+    stage('$n') {
+        sh('echo WORKSPACE: \$WORKSPACE')
+        sh('echo RISCV_CI: \$RISCV_CI')
+        sh('sleep 15s')
+    }
+        """
+        }
+
+        def mkpipnode = { x ->
+            """\
+node {
+${x.join("\n")}
+}"""
+        }
 
         dslFactory.pipelineJob(pipelineName) {
             scm {
@@ -48,20 +75,10 @@ parallel jobs
                 // inception, baby!
                 def dsl = []
                 for (s in stepNames) {
-                    dsl += """\
-    stage('$s') {
-        sh('echo WORKSPACE: \$WORKSPACE')
-        sh('echo RISCV_CI: \$RISCV_CI')
-        sh('sleep 15s')
-    }
-"""
+                    dsl += mkstage(s)
                 }
-                def s = """\
-node {
-${dsl.join("\n")}
-}"""
                 cps {
-                    script(s)
+                    script(mkpipnode(dsl))
                 }
 
             }
@@ -114,4 +131,3 @@ jobSpec.each {
 jobSpec.each {
     Builder.view(this, it[0], stepNames)
 }
-

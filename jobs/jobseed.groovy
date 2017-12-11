@@ -1,33 +1,30 @@
 import groovy.json.JsonSlurper
 
-//-----------------------------------------------------------------------------
 
 def jsonSlurper = new JsonSlurper()
 
-Map jobSpec = jsonSlurper.parse(("${JENKINS_HOME}/workspace/${JOB_NAME}/jobs/jobspec.json" as File))
+//Map jobSpec = jsonSlurper.parse(("${JENKINS_HOME}/workspace/${JOB_NAME}/jobs/jobspec.json" as File))
+Map jobSpec = jsonSlurper.parse(("jobs/jobspec.json" as File))
 
-build = new Builder()
+def build = new Builder()
 
-build.bossJob(this, jobSpec)
+build.masterJob(this)
 
 for (j in jobSpec) {
     build.workerJob(this, j.key, j.value)
 }
 
-//jobSpec.each {
-//    build.view(this)
-//}
-
-//-----------------------------------------------------------------------------
-
-
+/**
+ * Wrapper class for build definition jobs.
+ */
 class Builder {
     /**
      * Builds a Jenkins master job using pipeline DSL.
      * @param dslFactory
      * @return N/A
      */
-    def bossJob(dslFactory, jobSpec) {
+    def masterJob(dslFactory) {
+        // jdsl
         dslFactory.pipelineJob("top") {
             scm {
                 git {
@@ -36,12 +33,8 @@ class Builder {
                 }
             }
             definition {
-                def jobs = []
-                for (j in jobSpec) {
-                    jobs += mkjob(j)
-                }
                 cps {
-                    script(mkparnode(jobs))
+                    //script(readFileFromWorkspace("pipeline/master_pipeline.groovy"))
                 }
             }
         }
@@ -53,6 +46,7 @@ class Builder {
      * @return N/A
      */
     def workerJob(dslFactory, name, job) {
+        // jdsl
         dslFactory.pipelineJob(name) {
             scm {
                 git {
@@ -69,13 +63,8 @@ class Builder {
                 stringParam("RISCV_CI", "/you/must/set/me")
             }
             definition {
-                // inception, baby!
-                def dsl = []
-                for (stage in ["build", "test", "deploy"]) {
-                    dsl += mkstage(stage)
-                }
                 cps {
-                    script(mkpipenode(dsl))
+                    //script(readFileFromWorkspace("pipeline/${name}_pipeline.groovy"))
                 }
             }
         }
@@ -83,8 +72,6 @@ class Builder {
 
     /*
     static view(viewFactory, pipelineName, jobNames) {
-        println("Building Jenkins view '$pipelineName'")
-
         viewFactory.listView(pipelineName) {
             description("All jobs for pipeline $pipelineName")
             filterBuildQueue()
@@ -103,34 +90,7 @@ class Builder {
             }
         }
     }
+
     */
-    private def mkjob = { j ->
-        "jobs['$j'] = { build job: '$j', parameters: [[\$class: 'StringParameterValue', name: 'RISCV_CI', value:\"\${env.WORKSPACE}\"]] }"
-    }
 
-    private def mkparnode = { n ->
-        """\
-node {
-def jobs = [:]
-${n.join('\n')}
-parallel jobs
-}"""
-    }
-
-    def mkstage = { s ->
-        """\
-    stage('$s') {
-        sh('echo WORKSPACE: \$WORKSPACE')
-        sh('echo RISCV_CI: \$RISCV_CI')
-        sh('sleep 15s')
-    }
-        """
-    }
-
-    def mkpipenode = { x ->
-        """\
-node {
-${x.join("\n")}
-}"""
-    }
 }

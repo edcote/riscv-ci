@@ -1,20 +1,26 @@
 {
   "toolchain": {
-    "github": "riscv/riscv-gnu-toolchain"
+    "github": "riscv/riscv-gnu-toolchain",
+    "pipeline": "pipeline/toolchain.groovy"
   },
   "spike": {
-    "github": "riscv/riscv-isa-sim"
+    "github": "riscv/riscv-isa-sim",
+    "pipeline": "pipeline/spike.groovy"
   },
   "rocketchip": {
-    "github": "freechipsproject/rocket-chip"
+    "github": "freechipsproject/rocket-chip",
+    "pipeline": "pipeline/rocketchip.groovy"
   },
   "fesvr": {
-    "github": "riscv/riscv-fesvr"
+    "github": "riscv/riscv-fesvr",
+    "pipeline": "pipeline/fesvr.groovy"
   },
   "qemu": {
-    "github": "riscv/riscv-qemu"
+    "github": "riscv/riscv-qemu",
+    "pipeline": "pipeline/qemu.groovy"
   },
   "pk": {
-    "github": "riscv/riscv-pk"
+    "github": "riscv/riscv-pk",
+    "pipeline": "pipeline/pk.groovy"
   }
 }

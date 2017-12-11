@@ -4,7 +4,7 @@ import groovy.json.JsonSlurper
 
 def jsonSlurper = new JsonSlurper()
 
-Map jobSpec = jsonSlurper.parse(("jobs/jobspec.json" as File))
+Map jobSpec = jsonSlurper.parse(("${JENKINS_HOME}/workspace/${JOB_NAME}/jobs/jobspec.json" as File))
 
 build = new Builder()
 

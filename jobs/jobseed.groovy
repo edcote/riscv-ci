@@ -5,9 +5,11 @@ import hudson.*
 
 def jsonSlurper = new JsonSlurper()
 
-hudson.FilePath myworkspace = hudson.model.Executor.currentExecutor().getCurrentWorkspace()
+// FIXME: DNR
+String myworkspace = hudson.model.Executor.currentExecutor().getCurrentWorkspace().toString()
+//String myworkspace = "./"
+
 Map jobSpec = jsonSlurper.parse(("${myworkspace}/jobs/jobspec.json" as File))
-//Map jobSpec = jsonSlurper.parse(("jobs/jobspec.json" as File))
 
 def build = new Builder()
 
@@ -22,7 +24,9 @@ for (j in jobSpec) {
  */
 class Builder {
     // FIXME: DNR
-    hudson.FilePath myworkspace = hudson.model.Executor.currentExecutor().getCurrentWorkspace()
+    String myworkspace = hudson.model.Executor.currentExecutor().getCurrentWorkspace().toString()
+    //String myworkspace = "./"
+
     /**
      * Builds a Jenkins master job using pipeline DSL.
      * @param dslFactory
@@ -40,7 +44,6 @@ class Builder {
                         github('edcote/riscv-ci', 'develop')
                     }
                     scriptPath("${myworkspace}/pipelines/master_pipeline.groovy")
-                    //scriptPath("pipelines/master_pipeline.groovy")
                 }
             }
         }
@@ -78,7 +81,6 @@ class Builder {
                         }
                     }
                     scriptPath("${myworkspace}/pipelines/${name}_pipeline.groovy")
-                    //scriptPath("pipelines/${name}_pipeline.groovy")
                 }
             }
         }

@@ -12,7 +12,7 @@ class Builder {
             definition {
                 def dsl = []
                 for (j in jobSpec) {
-                    dsl += "job['${j[0]}'] = { build job: '${j[0]}', parameters: [[\$class: 'StringParameterValue', name: 'RISCV_CI', value:"\${env.WORKSPACE}\"]] }"
+                    dsl += "job['${j[0]}'] = { build job: '${j[0]}', parameters: [[\$class: 'StringParameterValue', name: 'RISCV_CI', value:\"\${env.WORKSPACE}\"]] }"
                 }
                 cps {
                     script("""\
@@ -49,11 +49,22 @@ parallel jobs
                 // inception, baby!
                 def dsl = []
                 for (s in stepNames) {
-                    dsl += "stage('$s') { sh('echo w:\$WORKSPACE -- r:\$RISCV_CI') }"
+                    dsl += """\
+    stage('$s') {
+        sh('echo WORKSPACE: \$WORKSPACE')
+        sh('echo RISCV_CI: \$RISCV_CI')
+        sh('sleep 15s')
+    }
+"""
                 }
+                def s = """\
+node {
+${dsl.join("\n")}
+}"""
                 cps {
-                    script("node { ${dsl.join("\n")} }")
+                    script(s)
                 }
+
             }
         }
     }
@@ -80,7 +91,6 @@ parallel jobs
             }
         }
     }
-
 }
 
 def jobSpec = [['pk', 'riscv/riscv-pk'],
@@ -88,8 +98,7 @@ def jobSpec = [['pk', 'riscv/riscv-pk'],
                ['spike', 'riscv/riscv-isa-sim'],
                ['qemu', 'riscv/riscv-qemu'],
                ['rocketchip', 'freechipsproject/rocket-chip'],
-               ['toolchain', 'riscv/riscv-gnu-toolchain']
-]
+               ['toolchain', 'riscv/riscv-gnu-toolchain']]
 
 
 def stepNames = ["build", "test", "deploy"]
@@ -103,5 +112,7 @@ jobSpec.each {
 }
 
 // views for each pipeline
-jobSpec.each { Builder.view(this, it[0], stepNames) }
+jobSpec.each {
+    Builder.view(this, it[0], stepNames)
+}
 

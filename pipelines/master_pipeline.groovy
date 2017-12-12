@@ -1,4 +1,6 @@
 node {
+    sh('echo WORKSPACE: $WORKSPACE')
+    sh('echo RISCV_CI: $RISCV_CI')
     def jobs = [:]
     jobs['toolchain'] = { build job: 'toolchain', parameters: [[$class: 'StringParameterValue', name: 'RISCV_CI', value:"${env.WORKSPACE}"]] }
     jobs['spike'] = { build job: 'spike', parameters: [[$class: 'StringParameterValue', name: 'RISCV_CI', value:"${env.WORKSPACE}"]] }

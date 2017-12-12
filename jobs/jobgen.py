@@ -16,6 +16,8 @@ for job in jobspec:
 f = open('../pipelines/master_pipeline.groovy', 'w')
 f.write("""\
 node {{
+    sh('echo WORKSPACE: $WORKSPACE')
+    sh('echo RISCV_CI: $RISCV_CI')
     def jobs = [:]
 {}
     parallel jobs

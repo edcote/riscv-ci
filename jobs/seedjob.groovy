@@ -22,6 +22,10 @@ for (j in jobSpec) {
  * Wrapper class for build definition jobs.
  */
 class Builder {
+    // FIXME: DNR
+    String myworkspace = hudson.model.Executor.currentExecutor().getCurrentWorkspace().toString()
+    //String myworkspace = "./"
+
     /**
      * Builds a Jenkins master job using pipeline DSL.
      * @param dslFactory
@@ -31,12 +35,12 @@ class Builder {
         // jdsl
         dslFactory.pipelineJob("master") {
             scm {
-                github('edcote/riscv-ci', 'develop') // don't think this does anything
+                github('edcote/riscv-ci', 'develop')
             }
             definition {
                 cps {
+                    script("evaluate(new File(\"${myworkspace}/pipelines/master_pipeline.groovy\"))")
                     sandbox(false)
-                    script(dslFactory.readFileFromWorkspace('seedjob', 'pipelines/master_pipeline.groovy'))
                 }
             }
         }
@@ -61,10 +65,11 @@ class Builder {
             }
             parameters {
                 stringParam("RISCV_CI", "/you/must/set/me")
+                stringParam("JENKINSFILE", "/you/must/set/me")
             }
             definition {
                 cps {
-                    script(dslFactory.readFileFromWorkspace('seedjob', "pipelines/${name}_pipeline.groovy"))
+                    script("evaluate(new File(\"${myworkspace}/pipelines/${name}_pipeline.groovy\"))")
                     sandbox(false)
                 }
             }

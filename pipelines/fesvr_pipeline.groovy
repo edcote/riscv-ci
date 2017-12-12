@@ -3,7 +3,6 @@ stage('Build') {
     def joblib = load("${env.RISCV_CI}/pipelines/fesvr_build.groovy")
     sh('echo WORKSPACE: $WORKSPACE')
     sh('echo RISCV_CI: $RISCV_CI')
-    sh('echo PWD: $PWD')
     joblib.binTrue()
     sh('sleep 2s')
 }        

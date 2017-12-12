@@ -17,7 +17,7 @@ f = open('../pipelines/master_pipeline.groovy', 'w')
 f.write("""\
 node {{
     sh("echo WORKSPACE: ${{env.WORKSPACE}}")
-    sh('echo WORKSPACE: $WORKSPACE')
+    sh("echo RISCV_CI: ${{env.RISCV_CI}}")
     def jobs = [:]
 {}
     parallel jobs
@@ -30,6 +30,11 @@ for job in jobspec:
     f.write("""\
 // assuming that stage('Compile') is done b 
 node {{
+
+sh('echo WORKSPACE: $WORKSPACE')
+
+sh('echo RISCV_CI: $RISCV_CI')       
+
 stage('Compile') {{
     checkout([ $class: 'GitSCM',
                     branches: [[name: '*/master']],
@@ -40,15 +45,11 @@ stage('Compile') {{
 }}
 stage('Build') {{
     def joblib = load("${{env.RISCV_CI}}/pipelines/{}_build.groovy")
-    sh('echo WORKSPACE: $WORKSPACE')
-    sh('echo RISCV_CI: $RISCV_CI')
     joblib.binTrue()
     sh('sleep 2s')
 }}        
 stage('Test') {{
     def joblib = load("${{env.RISCV_CI}}/pipelines/{}_test.groovy")
-    sh('echo WORKSPACE: $WORKSPACE')
-    sh('echo RISCV_CI: $RISCV_CI')
     sh('echo PWD: $PWD')
     joblib.binTrue()
     sh('sleep 2s')
@@ -63,14 +64,10 @@ for job in jobspec:
         f = open('../pipelines/{}_{}.groovy'.format(job, stage), 'w')
         f.write("""\
 def binTrue() {
-    sh('echo WORKSPACE: $WORKSPACE')
-    sh('echo RISCV_CI: $RISCV_CI')       
     sh('/bin/true')
 }
 
 def binFalse() {
-    sh('echo WORKSPACE: $WORKSPACE')
-    sh('echo RISCV_CI: $RISCV_CI')       
     sh('/bin/false')
 }
 return this;

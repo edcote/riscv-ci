@@ -30,14 +30,14 @@ node {{
 stage('Build') {{
     sh('echo WORKSPACE: $WORKSPACE')
     sh('echo RISCV_CI: $RISCV_CI')
-    def joblib = load("${{env.WORKSPACE}}/pipelines/{}_test.groovy")
+    def joblib = load("${{env.RISCV_CI}}/pipelines/{}_test.groovy")
     joblib.true()
     sh('sleep 2s')
 }}        
 stage('Test') {{
     sh('echo WORKSPACE: $WORKSPACE')
     sh('echo RISCV_CI: $RISCV_CI')
-    def joblib = load("${{env.WORKSPACE}}/pipelines/{}_test.groovy")
+    def joblib = load("${{env.RISCV_CI}}/pipelines/{}_test.groovy")
     joblib.true()
     sh('sleep 2s')
 }}

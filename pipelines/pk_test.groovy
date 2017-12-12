@@ -1,4 +1,6 @@
-sh('echo WORKSPACE: $WORKSPACE')
-sh('echo RISCV_CI: $RISCV_CI')       
-sh('/bin/true')       
+def true():
+    sh('echo WORKSPACE: $WORKSPACE')
+    sh('echo RISCV_CI: $RISCV_CI')       
+    sh('/bin/true')
+return this;
             

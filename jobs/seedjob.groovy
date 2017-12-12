@@ -38,7 +38,7 @@ class Builder {
                 github('edcote/riscv-ci', 'develop')
             }
             parameters {
-                stringParam("RISCV_CI", "/you/must/set/me") // .. seedjob will set
+                stringParam("RISCV_CI", "${myworkspace}") // .. seedjob will set
             }
             definition {
                 cps {

@@ -65,11 +65,9 @@ class Builder {
                 stringParam("RISCV_CI", "/you/must/set/me")
             }
             definition {
-                cpsScm {
-                    scm {
-                        github('edcote/riscv-ci', 'develop')
-                        scriptPath("pipelines/${name}_pipeline.groovy")
-                    }
+                cps {
+                    script("evaluate(new File(\"../\${env.RISCV_CI}/pipelines/pk_${name}.groovy\"")
+                    sandbox(false)
                 }
             }
         }

@@ -1,5 +1,13 @@
-def true():
-    sh('echo wWORKSPACE: $WORKSPACE')
-    sh('echo wRISCV_CI: $RISCV_CI')       
+def binTrue() {
+    sh('echo WORKSPACE: $WORKSPACE')
+    sh('echo RISCV_CI: $RISCV_CI')       
     sh('/bin/true')
-return this;
+    return this;
+}
+
+def binFalse() {
+    sh('echo WORKSPACE: $WORKSPACE')
+    sh('echo RISCV_CI: $RISCV_CI')       
+    sh('/bin/false')
+    return this;
+}

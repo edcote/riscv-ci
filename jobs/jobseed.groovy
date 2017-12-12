@@ -31,13 +31,13 @@ class Builder {
         // jdsl
         dslFactory.pipelineJob("master") {
             scm {
-                github('edcote/riscv-ci', 'develop')
+                github('edcote/riscv-ci', 'develop') // don't think this does anything
             }
             definition {
                 cpsScm {
                     scm {
-                        //github('edcote/riscv-ci', 'develop')
-                        scriptPath("pipelines/master_pipeline.groovy")
+                        github('edcote/riscv-ci', 'develop')
+                        scriptPath("@script/pipelines/master_pipeline.groovy")
                     }
                 }
             }

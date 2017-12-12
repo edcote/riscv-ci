@@ -16,8 +16,8 @@ for job in jobspec:
 f = open('../pipelines/master_pipeline.groovy', 'w')
 f.write("""\
 node {{
+    sh("echo WORKSPACE: ${{env.WORKSPACE}}")
     sh('echo WORKSPACE: $WORKSPACE')
-    sh('echo RISCV_CI: $RISCV_CI')
     def jobs = [:]
 {}
     parallel jobs
@@ -30,6 +30,8 @@ for job in jobspec:
     f.write("""\
 node {{
 stage('Build') {{
+    sh("echo WORKSPACE: ${{env.WORKSPACE}}")
+    sh("echo WORKSPACE: ${{env.RISCV_CI}}")
     sh('echo WORKSPACE: $WORKSPACE')
     sh('echo RISCV_CI: $RISCV_CI')
     def joblib = load("${{env.RISCV_CI}}/pipelines/{}_test.groovy")

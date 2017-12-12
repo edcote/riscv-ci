@@ -10,7 +10,7 @@ jobspec = json.load(open(jsonfile))
 jobs = []
 for job in jobspec:
     jobs.append(
-        "    jobs['{}'] = {{ build job: '{}', parameters: [[$class: 'StringParameterValue', name: 'RISCV_CI', value:\"${{env.WORKSPACE}}\"]] }}".format(
+        "    jobs['{}'] = {{ build job: '{}', parameters: [[$class: 'StringParameterValue', name: 'RISCV_CI', value:\"${{env.RISCV_CI}}\"]] }}".format(
             job, job))
 
 f = open('../pipelines/master_pipeline.groovy', 'w')

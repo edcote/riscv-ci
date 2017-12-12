@@ -5,11 +5,11 @@ sh('echo WORKSPACE: $WORKSPACE')
 
 sh('echo RISCV_CI: $RISCV_CI')       
 
-stage('Compile') {
+stage('Clone') {
     checkout([ $class: 'GitSCM',
                     branches: [[name: '*/master']],
                     userRemoteConfigs: [[url: 'https://github.com/riscv/riscv-pk']],
-                    extensions: [ [$class: 'SubmoduleOption', recursiveSubmodules: true, disableSubmodules: false] ]
+                    extensions: [ [$class: 'SubmoduleOption', recursiveSubmodules: true, disableSubmodules: false, timeout: 120] ]
                   ])
     sh('sleep 2s')
 }

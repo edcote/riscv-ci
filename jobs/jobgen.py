@@ -30,13 +30,15 @@ node {{
 stage('Build') {{
     sh('echo WORKSPACE: $WORKSPACE')
     sh('echo RISCV_CI: $RISCV_CI')
-    script("${{env.WORKSPACE}}/pipelines/{}_build.groovy")
+    def joblib = load("${{env.WORKSPACE}}/pipelines/{}_test.groovy")
+    joblib.true()
     sh('sleep 2s')
 }}        
 stage('Test') {{
     sh('echo WORKSPACE: $WORKSPACE')
     sh('echo RISCV_CI: $RISCV_CI')
-    script("${{env.WORKSPACE}}/pipelines/{}_test.groovy")
+    def joblib = load("${{env.WORKSPACE}}/pipelines/{}_test.groovy")
+    joblib.true()
     sh('sleep 2s')
 }}
 }}
@@ -48,8 +50,10 @@ for job in jobspec:
     for stage in ["build", "test"]:
         f = open('../pipelines/{}_{}.groovy'.format(job, stage), 'w')
         f.write("""\
-sh('echo WORKSPACE: $WORKSPACE')
-sh('echo RISCV_CI: $RISCV_CI')       
-sh('/bin/true')       
+def true():
+    sh('echo WORKSPACE: $WORKSPACE')
+    sh('echo RISCV_CI: $RISCV_CI')       
+    sh('/bin/true')
+return this;
             """)
         f.close()

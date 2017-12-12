@@ -28,7 +28,16 @@ f.close()
 for job in jobspec:
     f = open('../pipelines/{}_pipeline.groovy'.format(job), 'w')
     f.write("""\
+// assuming that stage('Compile') is done b 
 node {{
+stage('Compile') {{
+    checkout([ $class: 'GitSCM',
+                    branches: [[name: '*/master']],
+                    userRemoteConfigs: [[url: 'https://github.com/{}']],
+                    extensions: [ [$class: 'SubmoduleOption', recursiveSubmodules: false, disableSubmodules:false] ]
+                  ])
+    sh('sleep 2s')
+}}
 stage('Build') {{
     def joblib = load("${{env.RISCV_CI}}/pipelines/{}_build.groovy")
     sh('echo WORKSPACE: $WORKSPACE')
@@ -45,7 +54,7 @@ stage('Test') {{
     sh('sleep 2s')
 }}
 }}
-    """.format(job, job))
+    """.format(jobspec[job]['github'], job, job))
     f.close
 
 # dummy jobs

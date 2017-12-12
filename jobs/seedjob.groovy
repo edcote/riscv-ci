@@ -65,12 +65,10 @@ class Builder {
             }
             parameters {
                 stringParam("RISCV_CI", "/you/must/set/me")
-                stringParam("JENKINSFILE", "/you/must/set/me")
             }
             definition {
                 cps {
                     script("evaluate(new File(\"${myworkspace}/pipelines/${name}_pipeline.groovy\"))")
-                    sandbox(false)
                 }
             }
         }

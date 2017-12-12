@@ -1,4 +1,13 @@
+// assuming that stage('Compile') is done b 
 node {
+stage('Compile') {
+    checkout([ $class: 'GitSCM',
+                    branches: [[name: '*/master']],
+                    userRemoteConfigs: [[url: 'https://github.com/riscv/riscv-gnu-toolchain']],
+                    extensions: [ [$class: 'SubmoduleOption', recursiveSubmodules: false, disableSubmodules:false] ]
+                  ])
+    sh('sleep 2s')
+}
 stage('Build') {
     def joblib = load("${env.RISCV_CI}/pipelines/toolchain_build.groovy")
     sh('echo WORKSPACE: $WORKSPACE')

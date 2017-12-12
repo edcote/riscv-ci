@@ -37,9 +37,12 @@ class Builder {
             scm {
                 github('edcote/riscv-ci', 'develop')
             }
+            parameters {
+                stringParam("RISCV_CI", "/you/must/set/me") // .. seedjob will set
+            }
             definition {
                 cps {
-                    script("evaluate(new File(\"${myworkspace}/pipelines/master_pipeline.groovy\"))")
+                    script("evaluate(new File(\"\${env.RISCV_CI}/pipelines/master_pipeline.groovy\"))")
                     sandbox(false)
                 }
             }
@@ -64,11 +67,11 @@ class Builder {
                 }
             }
             parameters {
-                stringParam("RISCV_CI", "/you/must/set/me")
+                stringParam("RISCV_CI", "/you/must/set/me") // .. master job will set
             }
             definition {
                 cps {
-                    script("evaluate(new File(\"${myworkspace}/pipelines/${name}_pipeline.groovy\"))")
+                    script("evaluate(new File(\"\${env.RISCV_CI}/pipelines/${name}_pipeline.groovy\"))")
                 }
             }
         }

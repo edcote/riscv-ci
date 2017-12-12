@@ -66,7 +66,7 @@ class Builder {
             }
             definition {
                 cps {
-                    script("evaluate(new File(\"../\${env.RISCV_CI}/pipelines/pk_${name}.groovy\"")
+                    script("evaluate(new File(\"../\${env.RISCV_CI}/pipelines/${name}_pipeline.groovy\"))")
                     sandbox(false)
                 }
             }

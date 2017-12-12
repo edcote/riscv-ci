@@ -30,10 +30,10 @@ for job in jobspec:
     f.write("""\
 node {{
 stage('Build') {{
-    sh('echo WORKSPACE: $WORKSPACE')
-    sh('echo RISCV_CI: $RISCV_CI')
+    sh('echo mWORKSPACE: $WORKSPACE')
+    sh('echo mRISCV_CI: $RISCV_CI')
     sh('echo PWD: $PWD')
-    def joblib = load("${{env.RISCV_CI}}@script/pipelines/{}_test.groovy")
+    def joblib = load("${{env.RISCV_CI}}@script/pipelines/{}_build.groovy")
     joblib.true()
     sh('sleep 2s')
 }}        
@@ -55,9 +55,9 @@ for job in jobspec:
         f = open('../pipelines/{}_{}.groovy'.format(job, stage), 'w')
         f.write("""\
 def true():
-    sh('echo WORKSPACE: $WORKSPACE')
-    sh('echo RISCV_CI: $RISCV_CI')       
+    sh('echo wWORKSPACE: $WORKSPACE')
+    sh('echo wRISCV_CI: $RISCV_CI')       
     sh('/bin/true')
 return this;
-            """)
+""")
         f.close()

@@ -39,7 +39,7 @@ stage('Compile') {{
     checkout([ $class: 'GitSCM',
                     branches: [[name: '*/master']],
                     userRemoteConfigs: [[url: 'https://github.com/{}']],
-                    extensions: [ [$class: 'SubmoduleOption', recursiveSubmodules: false, disableSubmodules:false] ]
+                    extensions: [ [$class: 'SubmoduleOption', recursiveSubmodules: true, disableSubmodules: false] ]
                   ])
     sh('sleep 2s')
 }}

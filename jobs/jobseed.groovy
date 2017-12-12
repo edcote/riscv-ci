@@ -5,8 +5,8 @@ import hudson.*
 
 def jsonSlurper = new JsonSlurper()
 
-//String myworkspace = hudson.model.Executor.currentExecutor().getCurrentWorkspace().toString()
-String myworkspace = "./"
+String myworkspace = hudson.model.Executor.currentExecutor().getCurrentWorkspace().toString()
+//String myworkspace = "./"
 
 Map jobSpec = jsonSlurper.parse(("${myworkspace}/jobs/jobspec.json" as File))
 

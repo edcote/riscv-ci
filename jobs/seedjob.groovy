@@ -35,10 +35,8 @@ class Builder {
             }
             definition {
                 cps {
-                    scm {
-                        sandbox(false)
-                        script("evaluate(new File(\"./pipelines/master_pipeline.groovy\"))")
-                    }
+                    sandbox(false)
+                    script(dslFactory.readFileFromWorkspace('seedjob', 'pipelines/master_pipeline.groovy'))
                 }
             }
         }
@@ -66,7 +64,7 @@ class Builder {
             }
             definition {
                 cps {
-                    script("evaluate(new File(\"../\${env.RISCV_CI}/pipelines/${name}_pipeline.groovy\"))")
+                    script(dslFactory.readFileFromWorkspace('seedjob', "pipelines/${name}_pipeline.groovy"))
                     sandbox(false)
                 }
             }

@@ -37,8 +37,8 @@ class Builder {
                 cpsScm {
                     scm {
                         github('edcote/riscv-ci', 'develop')
+                        scriptPath("pipelines/master_pipeline.groovy")
                     }
-                    scriptPath("./pipelines/master_pipeline.groovy")
                 }
             }
         }
@@ -68,9 +68,9 @@ class Builder {
                 cpsScm {
                     scm {
                         github('edcote/riscv-ci', 'develop')
+                        scriptPath("pipelines/${name}_pipeline.groovy")
                     }
                 }
-                scriptPath("./pipelines/${name}_pipeline.groovy")
             }
         }
     }

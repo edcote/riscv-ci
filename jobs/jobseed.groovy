@@ -34,10 +34,10 @@ class Builder {
                 github('edcote/riscv-ci', 'develop') // don't think this does anything
             }
             definition {
-                cpsScm {
+                cps {
                     scm {
-                        github('edcote/riscv-ci', 'develop')
-                        scriptPath("pipelines/master_pipeline.groovy")
+                        sandbox(false)
+                        script("evaluate(new File(\"./pipelines/master_pipeline.groovy\"))")
                     }
                 }
             }

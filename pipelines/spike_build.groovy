@@ -1,8 +1,4 @@
-def binTrue() {
+def build() {
     sh('/bin/true')
-}
-
-def binFalse() {
-    sh('/bin/false')
 }
 return this;

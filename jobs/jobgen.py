@@ -44,13 +44,12 @@ stage('Clone') {{
 }}
 stage('Build') {{
     def joblib = load("${{env.RISCV_CI}}/pipelines/{}_build.groovy")
-    joblib.binTrue()
+    joblib.build()
     sh('sleep 2s')
 }}
 stage('Test') {{
     def joblib = load("${{env.RISCV_CI}}/pipelines/{}_test.groovy")
-    sh('echo PWD: $PWD')
-    joblib.binTrue()
+    joblib.test()
     sh('sleep 2s')
 }}
 }}
@@ -62,13 +61,9 @@ for job in jobspec:
     for stage in ["build", "test"]:
         f = open('../pipelines/{}_{}.groovy'.format(job, stage), 'w')
         f.write("""\
-def binTrue() {
+def {}() {{
     sh('/bin/true')
-}
-
-def binFalse() {
-    sh('/bin/false')
-}
+}}
 return this;
-""")
+""".format(stage))
         f.close()

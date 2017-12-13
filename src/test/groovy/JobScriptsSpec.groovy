@@ -30,6 +30,7 @@ class JobScriptsSpec extends Specification {
         List<File> files = []
         new File('jobs').eachFileRecurse {
             if (it.name.endsWith('.groovy')) {
+                println(it)
                 files << it
             }
         }

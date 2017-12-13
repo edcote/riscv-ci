@@ -50,11 +50,13 @@ dependencies {
 
     // plugins to install in test instance
 
-    // search here --> gghttps://repo.jenkins-ci.org/webapp/#/home
+    // search here --> https://repo.jenkins-ci.org/webapp/#/home
+    // groupId:artifactId:version
+    testPlugins 'org.jenkins-ci.plugins:git:3.6.4'
+    testPlugins 'org.jenkins-ci.plugins:token-macro:2.3'
     testPlugins 'org.jenkins-ci.plugins:ghprb:1.39.0'
-    //testPlugins 'org.jenkins-ci.plugins:github:1.28.1@jar'
     testPlugins 'com.coravy.hudson.plugins.github:github:1.28.1'
-    //           ^^^ ???
+    testPlugins 'org.jenkins-ci.plugins.workflow:workflow-aggregator:2.5'
 }
 
 task resolveTestPlugins(type: Copy) {

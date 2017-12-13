@@ -2,7 +2,7 @@
 
 import json
 
-jsonfile = "/home/edc/gitrepos/riscv-ci/jobs/jobspec.json"
+jsonfile = "jobspec.json"
 
 jobspec = json.load(open(jsonfile))
 
@@ -10,8 +10,7 @@ jobspec = json.load(open(jsonfile))
 jobs = []
 for job in jobspec:
     jobs.append(
-        "    jobs['{}'] = {{ build job: '{}', parameters: [[$class: 'StringParameterValue', name: 'RISCV_CI', value:\"${{env.RISCV_CI}}\"]] }}".format(
-            job, job))
+        "    jobs['{}'] = {{ stage('{}') {{ build job: '{}', parameters: [[$class: 'StringParameterValue', name: 'RISCV_CI', value:\"${{env.RISCV_CI}}\"]] }} }}".format(job, job, job))
 
 f = open('../pipelines/master_pipeline.groovy', 'w')
 f.write("""\
@@ -33,7 +32,7 @@ node {{
 
 sh('echo WORKSPACE: $WORKSPACE')
 
-sh('echo RISCV_CI: $RISCV_CI')       
+sh('echo RISCV_CI: $RISCV_CI')
 
 stage('Clone') {{
     checkout([ $class: 'GitSCM',
@@ -47,7 +46,7 @@ stage('Build') {{
     def joblib = load("${{env.RISCV_CI}}/pipelines/{}_build.groovy")
     joblib.binTrue()
     sh('sleep 2s')
-}}        
+}}
 stage('Test') {{
     def joblib = load("${{env.RISCV_CI}}/pipelines/{}_test.groovy")
     sh('echo PWD: $PWD')

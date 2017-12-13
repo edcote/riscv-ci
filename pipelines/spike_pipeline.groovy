@@ -3,7 +3,7 @@ node {
 
 sh('echo WORKSPACE: $WORKSPACE')
 
-sh('echo RISCV_CI: $RISCV_CI')       
+sh('echo RISCV_CI: $RISCV_CI')
 
 stage('Clone') {
     checkout([ $class: 'GitSCM',
@@ -17,7 +17,7 @@ stage('Build') {
     def joblib = load("${env.RISCV_CI}/pipelines/spike_build.groovy")
     joblib.binTrue()
     sh('sleep 2s')
-}        
+}
 stage('Test') {
     def joblib = load("${env.RISCV_CI}/pipelines/spike_test.groovy")
     sh('echo PWD: $PWD')

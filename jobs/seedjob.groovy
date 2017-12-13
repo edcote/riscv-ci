@@ -27,6 +27,15 @@ class Builder {
     //String myworkspace = "./"
 
     /**
+     * Returns contents of file as string.
+     * @param f
+     * @return String
+     */
+    def fromFile(f) {
+      new File(f).text
+    }
+
+    /**
      * Builds a Jenkins master job using pipeline DSL.
      * @param dslFactory
      * @return N/A
@@ -42,18 +51,18 @@ class Builder {
             }
             definition {
                 cps {
-                    script("evaluate(new File(\"\${env.RISCV_CI}/pipelines/master_pipeline.groovy\"))")
+                    script(fromFile("${myworkspace}/pipelines/master_pipeline.groovy"))
                     sandbox(false)
                 }
             }
         }
     }
 
-/**
- * Builds a Jenkins pipeline job using pipeline DSL.
- * @param dslFactory
- * @return N/A
- */
+    /**
+     * Builds a Jenkins pipeline job using pipeline DSL.
+     * @param dslFactory
+     * @return N/A
+     */
     def workerJob(dslFactory, name, job) {
         // jdsl
         dslFactory.pipelineJob(name) {
@@ -67,11 +76,12 @@ class Builder {
                 }
             }
             parameters {
-                stringParam("RISCV_CI", "/you/must/set/me") // .. master job will set
+                stringParam("RISCV_CI", "${myworkspace}") // .. master job will set
             }
             definition {
                 cps {
-                    script("evaluate(new File(\"\${env.RISCV_CI}/pipelines/${name}_pipeline.groovy\"))")
+                    script(fromFile("${myworkspace}/pipelines/${name}_pipeline.groovy"))
+                    sandbox(false)
                 }
             }
         }

@@ -22,5 +22,9 @@
   "pk": {
     "github": "riscv/riscv-pk",
     "pipeline": "pipeline/pk.groovy"
+  },
+  "openocd": {
+    "github": "riscv/riscv-openocd",
+    "pipeline": "pipeline/openocd.groovy"
   }
 }

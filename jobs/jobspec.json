@@ -26,5 +26,18 @@
   "openocd": {
     "github": "riscv/riscv-openocd",
     "pipeline": "pipeline/openocd.groovy"
+  },
+  "linux": {
+    "github": "riscv/riscv-linux",
+    "pipeline": "pipeline/linux.groovy"
+  },
+  "tests": {
+    "github": "riscv/riscv-tests",
+    "pipeline": "pipeline/tests.groovy"
+  },
+  "llvm": {
+    "github": "riscv/riscv-llvm",
+    "pipeline": "pipeline/llvm.groovy"
   }
 }
+

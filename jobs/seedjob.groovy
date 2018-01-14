@@ -6,7 +6,6 @@ import hudson.*
 def jsonSlurper = new JsonSlurper()
 
 String myworkspace = hudson.model.Executor.currentExecutor().getCurrentWorkspace().toString()
-//String myworkspace = "./"
 
 Map jobSpec = jsonSlurper.parse(("${myworkspace}/jobs/jobspec.json" as File))
 
@@ -22,9 +21,7 @@ for (j in jobSpec) {
  * Wrapper class for build definition jobs.
  */
 class Builder {
-    // FIXME: DNR
     String myworkspace = hudson.model.Executor.currentExecutor().getCurrentWorkspace().toString()
-    //String myworkspace = "./"
 
     /**
      * Returns contents of file as string.

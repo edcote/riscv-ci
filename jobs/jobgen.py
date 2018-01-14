@@ -27,7 +27,6 @@ f.close()
 for job in jobspec:
     f = open('../pipelines/{}_pipeline.groovy'.format(job), 'w')
     f.write("""\
-// assuming that stage('Compile') is done b 
 node {{
 
 sh('echo WORKSPACE: $WORKSPACE')
@@ -39,7 +38,7 @@ stage('Clone') {{
                     branches: [[name: '*/master']],
                     userRemoteConfigs: [[url: 'https://github.com/{}']],
                     extensions: [ [$class: 'SubmoduleOption', recursiveSubmodules: true, disableSubmodules: false, timeout: 120] ]
-                  ])
+             ])
     sh('sleep 2s')
 }}
 stage('Build') {{

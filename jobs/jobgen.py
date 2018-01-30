@@ -28,7 +28,6 @@ for job in jobspec:
     f = open('../pipelines/{}_pipeline.groovy'.format(job), 'w')
     f.write("""\
 node {{
-
 sh('echo WORKSPACE: $WORKSPACE')
 
 sh('echo RISCV_CI: $RISCV_CI')
@@ -41,11 +40,13 @@ stage('Clone') {{
              ])
     sh('sleep 2s')
 }}
+
 stage('Build') {{
     def joblib = load("${{env.RISCV_CI}}/pipelines/{}_build.groovy")
     joblib.build()
     sh('sleep 2s')
 }}
+
 stage('Test') {{
     def joblib = load("${{env.RISCV_CI}}/pipelines/{}_test.groovy")
     joblib.test()

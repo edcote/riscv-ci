@@ -25,7 +25,7 @@ stage('Test') {
 }
 
 stage('Deploy') {
-    nodelib.spike_test()
+    nodelib.spike_deploy()
     sh('sleep 2s')
 }
 }

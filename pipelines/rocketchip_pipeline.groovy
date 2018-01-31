@@ -25,7 +25,7 @@ stage('Test') {
 }
 
 stage('Deploy') {
-    nodelib.rocketchip_test()
+    nodelib.rocketchip_deploy()
     sh('sleep 2s')
 }
 }

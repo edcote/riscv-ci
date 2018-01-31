@@ -25,7 +25,7 @@ stage('Test') {
 }
 
 stage('Deploy') {
-    nodelib.qemu_test()
+    nodelib.qemu_deploy()
     sh('sleep 2s')
 }
 }

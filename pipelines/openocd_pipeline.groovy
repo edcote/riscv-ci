@@ -25,7 +25,7 @@ stage('Test') {
 }
 
 stage('Deploy') {
-    nodelib.openocd_test()
+    nodelib.openocd_deploy()
     sh('sleep 2s')
 }
 }

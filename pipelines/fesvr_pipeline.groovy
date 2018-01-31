@@ -25,7 +25,7 @@ stage('Test') {
 }
 
 stage('Deploy') {
-    nodelib.fesvr_test()
+    nodelib.fesvr_deploy()
     sh('sleep 2s')
 }
 }

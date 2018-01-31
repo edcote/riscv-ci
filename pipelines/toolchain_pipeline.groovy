@@ -25,7 +25,7 @@ stage('Test') {
 }
 
 stage('Deploy') {
-    nodelib.toolchain_test()
+    nodelib.toolchain_deploy()
     sh('sleep 2s')
 }
 }

@@ -6,31 +6,25 @@ jsonfile = "pipespec.json"
 
 pipespec = json.load(open(jsonfile))
 
-# master job
-pipelines = []
-for pipe in pipespec:
-    pipelines.append("    pipelines['{pipe}'] = {{ stage('{pipe}') {{ build job: '{pipe}', parameters: [[$class: 'StringParameterValue', name: 'RISCV_CI', value:\"${{env.RISCV_CI}}\"]] }} }}".format(**{'pipe': pipe}))
-
-f = open('../pipelines/master_pipeline.groovy', 'w')
-f.write("""\
-node {{
-    sh("echo WORKSPACE: ${{env.WORKSPACE}}")
-    sh("echo RISCV_CI: ${{env.RISCV_CI}}")
-    def pipelines = [:]
-{}
-    parallel pipelines
-}}""".format('\n'.join(pipelines)))
-f.close()
+# master job (deprecated)
+#pipelines = []
+#for pipe in pipespec:
+#    pipelines.append("    pipelines['{pipe}'] = {{ stage('{pipe}') {{ build job: '{pipe}', parameters: [[$class: 'StringParameterValue', name: 'RISCV_CI', value:\"${{env.RISCV_CI}}\"], [$class: 'StringParameterValue', name: 'RISCV', value:\"${{env.RISCV_CI}}/riscv\"]] }} }}".format(**{'pipe': pipe}))
+#
+#f = open('../pipelines/master_pipeline.groovy', 'w')
+#f.write("""\
+#node {{
+#    def pipelines = [:]
+#{}
+#    parallel pipelines
+#}}""".format('\n'.join(pipelines)))
+#f.close()
 
 # pipeline pipelines
 for pipe in pipespec:
     f = open("../pipelines/{}_pipeline.groovy".format(pipe), 'w')
     f.write("""\
 node {{
-sh('echo WORKSPACE: $WORKSPACE')
-
-sh('echo RISCV_CI: $RISCV_CI')
-
 def nodelib = load("${{env.RISCV_CI}}/jobs/nodelib.groovy")
 
 stage('Clone') {{
@@ -43,16 +37,19 @@ stage('Clone') {{
 }}
 
 stage('Build') {{
+    sh('printenv')
     nodelib.{pipe}_build()
     sh('sleep 2s')
 }}
 
 stage('Test') {{
+    sh('printenv')
     nodelib.{pipe}_test()
     sh('sleep 2s')
 }}
 
 stage('Deploy') {{
+    sh('printenv')
     nodelib.{pipe}_deploy()
     sh('sleep 2s')
 }}
@@ -74,3 +71,4 @@ def {}_{}() {{
 """.format(pipe, stage, " && \n".join(pipespec[pipe][stage])))
 f.write("return this;\n")
 f.close()
+

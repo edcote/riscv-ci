@@ -1,0 +1,48 @@
+{
+  "toolchain": {
+    "github": "riscv/riscv-gnu-toolchain",
+    "pipeline": "pipeline/toolchain.groovy",
+    "upstream": ""
+  },
+  "spike": {
+    "github": "riscv/riscv-isa-sim",
+    "pipeline": "pipeline/spike.groovy",
+    "upstream": "tests,fesvr"
+  },
+  "rocketchip": {
+    "github": "freechipsproject/rocket-chip",
+    "pipeline": "pipeline/rocketchip.groovy",
+    "upstream": "tests,fesvr,pk,toolchain"
+  },
+  "fesvr": {
+    "github": "riscv/riscv-fesvr",
+    "pipeline": "pipeline/fesvr.groovy",
+    "upstream": ""
+  },
+  "qemu": {
+    "github": "riscv/riscv-qemu",
+    "pipeline": "pipeline/qemu.groovy",
+    "upstream": "toolchain,linux"
+  },
+  "pk": {
+    "github": "riscv/riscv-pk",
+    "pipeline": "pipeline/pk.groovy",
+    "upstream": "toolchain"
+  },
+  "openocd": {
+    "github": "riscv/riscv-openocd",
+    "pipeline": "pipeline/openocd.groovy",
+    "upstream": "toolchain"
+  },
+  "linux": {
+    "github": "riscv/riscv-linux",
+    "pipeline": "pipeline/linux.groovy",
+    "upstream": "toolchain"
+  },
+  "tests": {
+    "github": "riscv/riscv-tests",
+    "pipeline": "pipeline/tests.groovy",
+    "upstream": ""
+  }
+}
+

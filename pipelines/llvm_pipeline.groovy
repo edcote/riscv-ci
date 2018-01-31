@@ -1,8 +1,9 @@
 node {
-
 sh('echo WORKSPACE: $WORKSPACE')
 
 sh('echo RISCV_CI: $RISCV_CI')
+
+def nodelib = load("${env.RISCV_CI}/jobs/nodelib.groovy")
 
 stage('Clone') {
     checkout([ $class: 'GitSCM',
@@ -12,14 +13,19 @@ stage('Clone') {
              ])
     sh('sleep 2s')
 }
+
 stage('Build') {
-    def joblib = load("${env.RISCV_CI}/pipelines/llvm_build.groovy")
-    joblib.build()
+    nodelib.llvm_build()
     sh('sleep 2s')
 }
+
 stage('Test') {
-    def joblib = load("${env.RISCV_CI}/pipelines/llvm_test.groovy")
-    joblib.test()
+    nodelib.llvm_test()
+    sh('sleep 2s')
+}
+
+stage('Deploy') {
+    nodelib.llvm_test()
     sh('sleep 2s')
 }
 }

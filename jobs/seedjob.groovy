@@ -37,23 +37,23 @@ class Builder {
      * @param dslFactory
      * @return N/A
      */
-    def masterJob(dslFactory) {
-        // --> https://jenkinsci.github.io/job-dsl-plugin/#path/pipelineJob
-        dslFactory.pipelineJob("master") {
-            scm {
-                github('edcote/riscv-ci', 'develop')
-            }
-            parameters {
-                stringParam("RISCV_CI", "${myworkspace}") // .. seedjob will set
-            }
-            definition {
-                cps {
-                    script(fromFile("${myworkspace}/pipelines/master_pipeline.groovy"))
-                    sandbox(false)
-                }
-            }
-        }
-    }
+//    def masterJob(dslFactory) {
+//        // --> https://jenkinsci.github.io/job-dsl-plugin/#path/pipelineJob
+//        dslFactory.pipelineJob("master") {
+//            scm {
+//                github('edcote/riscv-ci', 'develop')
+//            }
+//            parameters {
+//                stringParam("RISCV_CI", "${myworkspace}") // .. seedjob will set
+//            }
+//            definition {
+//                cps {
+//                    script(fromFile("${myworkspace}/pipelines/master_pipeline.groovy"))
+//                    sandbox(false)
+//                }
+//            }
+//        }
+//    }
 
     /**
      * Creates a Jenkins pipeline job using job-dsl-plugin.
@@ -73,7 +73,8 @@ class Builder {
                 }
             }
             parameters {
-                stringParam("RISCV_CI", "${myworkspace}") // .. master job will set
+                stringParam("RISCV_CI", "${myworkspace}")
+                stringParam("RISCV", "${myworkspace}/riscv")
             }
             definition {
                 cps {

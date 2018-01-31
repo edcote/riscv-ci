@@ -1,22 +1,4 @@
 // DO NOT EDIT, MANAGED FILE
-def tests_build() {
-    sh("""
-echo 'Build' && 
-/bin/true
-""")
-}
-def tests_test() {
-    sh("""
-echo 'Test' && 
-/bin/true
-""")
-}
-def tests_deploy() {
-    sh("""
-echo 'Deploy' && 
-/bin/true
-""")
-}
 def pk_build() {
     sh("""
 echo 'Build' && 
@@ -53,19 +35,19 @@ echo 'Deploy' &&
 /bin/true
 """)
 }
-def spike_build() {
+def tests_build() {
     sh("""
 echo 'Build' && 
 /bin/true
 """)
 }
-def spike_test() {
+def tests_test() {
     sh("""
 echo 'Test' && 
 /bin/true
 """)
 }
-def spike_deploy() {
+def tests_deploy() {
     sh("""
 echo 'Deploy' && 
 /bin/true
@@ -89,19 +71,37 @@ echo 'Deploy' &&
 /bin/true
 """)
 }
-def openocd_build() {
+def spike_build() {
     sh("""
 echo 'Build' && 
 /bin/true
 """)
 }
-def openocd_test() {
+def spike_test() {
     sh("""
 echo 'Test' && 
 /bin/true
 """)
 }
-def openocd_deploy() {
+def spike_deploy() {
+    sh("""
+echo 'Deploy' && 
+/bin/true
+""")
+}
+def toolchain_build() {
+    sh("""
+echo 'Build' && 
+/bin/true
+""")
+}
+def toolchain_test() {
+    sh("""
+echo 'Test' && 
+/bin/true
+""")
+}
+def toolchain_deploy() {
     sh("""
 echo 'Deploy' && 
 /bin/true
@@ -143,19 +143,19 @@ echo 'Deploy' &&
 /bin/true
 """)
 }
-def toolchain_build() {
+def openocd_build() {
     sh("""
 echo 'Build' && 
 /bin/true
 """)
 }
-def toolchain_test() {
+def openocd_test() {
     sh("""
 echo 'Test' && 
 /bin/true
 """)
 }
-def toolchain_deploy() {
+def openocd_deploy() {
     sh("""
 echo 'Deploy' && 
 /bin/true

@@ -1,12 +1,12 @@
 {
-  "toolchain": {
+  "toolchain_linux": {
     "github": "riscv/riscv-gnu-toolchain",
     "pipeline": "pipeline/toolchain.groovy",
     "upstream": "",
     "build": [
       "echo 'Build'",
       "rm -rf $WORKSPACE/build && mkdir -p $WORKSPACE/build && cd $WORKSPACE/build",
-      "../configure --prefix=$RISCV",
+      "../configure --prefix=$RISCV --enable-multilib",
       "make linux"
     ],
     "test": [
@@ -18,6 +18,29 @@
       "cd $WORKSPACE/build && make install"
     ]
   },
+
+
+  "toolchain_newlib": {
+    "github": "riscv/riscv-gnu-toolchain",
+    "pipeline": "pipeline/toolchain.groovy",
+    "upstream": "",
+    "build": [
+      "echo 'Build'",
+      "rm -rf $WORKSPACE/build && mkdir -p $WORKSPACE/build && cd $WORKSPACE/build",
+      "../configure --prefix=$RISCV",
+      "make"
+    ],
+    "test": [
+      "echo 'Test'",
+      "/bin/true"
+    ],
+    "deploy": [
+      "echo 'Deploy'",
+      "cd $WORKSPACE/build && make install"
+    ]
+  },
+
+
   "spike": {
     "github": "riscv/riscv-isa-sim",
     "pipeline": "pipeline/spike.groovy",
@@ -37,10 +60,13 @@
       "cd $WORKSPACE/build && make install"
     ]
   },
+
+
+
   "rocketchip": {
     "github": "freechipsproject/rocket-chip",
     "pipeline": "pipeline/rocketchip.groovy",
-    "upstream": "tests,fesvr,pk,toolchain",
+    "upstream": "tests,fesvr,pk,toolchain_newlib",
     "build": [
       "echo 'Build'",
       "/bin/true"
@@ -54,6 +80,9 @@
       "/bin/true"
     ]
   },
+
+
+
   "fesvr": {
     "github": "riscv/riscv-fesvr",
     "pipeline": "pipeline/fesvr.groovy",
@@ -73,10 +102,12 @@
       "cd $WORKSPACE/build && make install"
     ]
   },
+
+
   "qemu": {
     "github": "riscv/riscv-qemu",
     "pipeline": "pipeline/qemu.groovy",
-    "upstream": "toolchain,linux",
+    "upstream": "toolchain_linux,linux",
     "build": [
       "echo 'Build'",
       "/bin/true"
@@ -90,10 +121,12 @@
       "/bin/true"
     ]
   },
+
+
   "pk": {
     "github": "riscv/riscv-pk",
     "pipeline": "pipeline/pk.groovy",
-    "upstream": "toolchain",
+    "upstream": "toolchain_newlib",
     "build": [
       "echo 'Build'",
       "rm -rf $WORKSPACE/build && mkdir -p $WORKSPACE/build && cd $WORKSPACE/build",
@@ -109,10 +142,12 @@
       "cd $WORKSPACE/build && make install"
     ]
   },
+
+
   "openocd": {
     "github": "riscv/riscv-openocd",
     "pipeline": "pipeline/openocd.groovy",
-    "upstream": "toolchain",
+    "upstream": "",
     "build": [
       "echo 'Build'",
       "/bin/true"
@@ -126,10 +161,12 @@
       "/bin/true"
     ]
   },
+
+
   "linux": {
     "github": "riscv/riscv-linux",
     "pipeline": "pipeline/linux.groovy",
-    "upstream": "toolchain",
+    "upstream": "toolchain_linux",
     "build": [
       "echo 'Build'",
       "/bin/true"
@@ -143,6 +180,8 @@
       "/bin/true"
     ]
   },
+
+
   "tests": {
     "github": "riscv/riscv-tests",
     "pipeline": "pipeline/tests.groovy",

@@ -7,11 +7,11 @@ def jsonSlurper = new JsonSlurper()
 
 String myworkspace = hudson.model.Executor.currentExecutor().getCurrentWorkspace().toString()
 
-Map jobSpec = jsonSlurper.parse(("${myworkspace}/jobs/jobspec.json" as File))
+Map jobSpec = jsonSlurper.parse(("${myworkspace}/jobs/pipespec.json" as File))
 
 def build = new Builder()
 
-build.masterJob(this)
+//build.masterJob(this)
 
 for (j in jobSpec) {
     build.workerJob(this, j.key, j.value)
@@ -33,12 +33,12 @@ class Builder {
     }
 
     /**
-     * Builds a Jenkins master job using pipeline DSL.
+     * Creates a Jenkins master job using job-dsl-plugin.
      * @param dslFactory
      * @return N/A
      */
     def masterJob(dslFactory) {
-        // jdsl
+        // --> https://jenkinsci.github.io/job-dsl-plugin/#path/pipelineJob
         dslFactory.pipelineJob("master") {
             scm {
                 github('edcote/riscv-ci', 'develop')
@@ -56,7 +56,7 @@ class Builder {
     }
 
     /**
-     * Builds a Jenkins pipeline job using pipeline DSL.
+     * Creates a Jenkins pipeline job using job-dsl-plugin.
      * @param dslFactory
      * @return N/A
      */
@@ -79,6 +79,11 @@ class Builder {
                 cps {
                     script(fromFile("${myworkspace}/pipelines/${name}_pipeline.groovy"))
                     sandbox(false)
+                }
+            }
+            if (job['upstream'] != '') {
+                triggers {
+                    upstream(job['upstream'], 'SUCCESS')
                 }
             }
         }

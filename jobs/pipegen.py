@@ -53,7 +53,7 @@ stage('Test') {{
 }}
 
 stage('Deploy') {{
-    nodelib.{pipe}_test()
+    nodelib.{pipe}_deploy()
     sh('sleep 2s')
 }}
 }}
@@ -68,9 +68,9 @@ for pipe in pipespec:
         f.write("""\
 def {}_{}() {{
     sh(\"\"\"
-/bin/true
+{}
 \"\"\")
 }}
-""".format(pipe, stage))
+""".format(pipe, stage, " && \n".join(pipespec[pipe][stage])))
 f.write("return this;\n")
 f.close()

@@ -2,47 +2,155 @@
   "toolchain": {
     "github": "riscv/riscv-gnu-toolchain",
     "pipeline": "pipeline/toolchain.groovy",
-    "upstream": ""
+    "upstream": "",
+    "build": [
+      "echo 'Build'",
+      "/bin/true"
+    ],
+    "test": [
+      "echo 'Test'",
+      "/bin/true"
+    ],
+    "deploy": [
+      "echo 'Deploy'",
+      "/bin/true"
+    ]
   },
   "spike": {
     "github": "riscv/riscv-isa-sim",
     "pipeline": "pipeline/spike.groovy",
-    "upstream": "tests,fesvr"
+    "upstream": "tests,fesvr",
+    "build": [
+      "echo 'Build'",
+      "/bin/true"
+    ],
+    "test": [
+      "echo 'Test'",
+      "/bin/true"
+    ],
+    "deploy": [
+      "echo 'Deploy'",
+      "/bin/true"
+    ]
   },
   "rocketchip": {
     "github": "freechipsproject/rocket-chip",
     "pipeline": "pipeline/rocketchip.groovy",
-    "upstream": "tests,fesvr,pk,toolchain"
+    "upstream": "tests,fesvr,pk,toolchain",
+    "build": [
+      "echo 'Build'",
+      "/bin/true"
+    ],
+    "test": [
+      "echo 'Test'",
+      "/bin/true"
+    ],
+    "deploy": [
+      "echo 'Deploy'",
+      "/bin/true"
+    ]
   },
   "fesvr": {
     "github": "riscv/riscv-fesvr",
     "pipeline": "pipeline/fesvr.groovy",
-    "upstream": ""
+    "upstream": "",
+    "build": [
+      "echo 'Build'",
+      "/bin/true"
+    ],
+    "test": [
+      "echo 'Test'",
+      "/bin/true"
+    ],
+    "deploy": [
+      "echo 'Deploy'",
+      "/bin/true"
+    ]
   },
   "qemu": {
     "github": "riscv/riscv-qemu",
     "pipeline": "pipeline/qemu.groovy",
-    "upstream": "toolchain,linux"
+    "upstream": "toolchain,linux",
+    "build": [
+      "echo 'Build'",
+      "/bin/true"
+    ],
+    "test": [
+      "echo 'Test'",
+      "/bin/true"
+    ],
+    "deploy": [
+      "echo 'Deploy'",
+      "/bin/true"
+    ]
   },
   "pk": {
     "github": "riscv/riscv-pk",
     "pipeline": "pipeline/pk.groovy",
-    "upstream": "toolchain"
+    "upstream": "toolchain",
+    "build": [
+      "echo 'Build'",
+      "/bin/true"
+    ],
+    "test": [
+      "echo 'Test'",
+      "/bin/true"
+    ],
+    "deploy": [
+      "echo 'Deploy'",
+      "/bin/true"
+    ]
   },
   "openocd": {
     "github": "riscv/riscv-openocd",
     "pipeline": "pipeline/openocd.groovy",
-    "upstream": "toolchain"
+    "upstream": "toolchain",
+    "build": [
+      "echo 'Build'",
+      "/bin/true"
+    ],
+    "test": [
+      "echo 'Test'",
+      "/bin/true"
+    ],
+    "deploy": [
+      "echo 'Deploy'",
+      "/bin/true"
+    ]
   },
   "linux": {
     "github": "riscv/riscv-linux",
     "pipeline": "pipeline/linux.groovy",
-    "upstream": "toolchain"
+    "upstream": "toolchain",
+    "build": [
+      "echo 'Build'",
+      "/bin/true"
+    ],
+    "test": [
+      "echo 'Test'",
+      "/bin/true"
+    ],
+    "deploy": [
+      "echo 'Deploy'",
+      "/bin/true"
+    ]
   },
   "tests": {
     "github": "riscv/riscv-tests",
     "pipeline": "pipeline/tests.groovy",
-    "upstream": ""
+    "upstream": "",
+    "build": [
+      "echo 'Build'",
+      "/bin/true"
+    ],
+    "test": [
+      "echo 'Test'",
+      "/bin/true"
+    ],
+    "deploy": [
+      "echo 'Deploy'",
+      "/bin/true"
+    ]
   }
 }
 

@@ -5,7 +5,7 @@
     "upstream": "",
     "build": [
       "echo 'Build'",
-      "rm -rf $WORKSPACE/build && mkdir -p $WORKSPACE/build && cd $WORKSPACE/build",
+      "mkdir -p $WORKSPACE/build && cd $WORKSPACE/build",
       "../configure --prefix=$RISCV --enable-multilib",
       "make linux"
     ],
@@ -26,7 +26,7 @@
     "upstream": "",
     "build": [
       "echo 'Build'",
-      "rm -rf $WORKSPACE/build && mkdir -p $WORKSPACE/build && cd $WORKSPACE/build",
+      "mkdir -p $WORKSPACE/build && cd $WORKSPACE/build",
       "../configure --prefix=$RISCV",
       "make"
     ],
@@ -47,7 +47,7 @@
     "upstream": "tests,fesvr",
     "build": [
       "echo 'Build'",
-      "rm -rf $WORKSPACE/build && mkdir -p $WORKSPACE/build && cd $WORKSPACE/build",
+      "mkdir -p $WORKSPACE/build && cd $WORKSPACE/build",
       "../configure --prefix=$RISCV --with-fesvr=$RISCV",
       "make"
     ],
@@ -89,7 +89,7 @@
     "upstream": "",
     "build": [
       "echo 'Build'",
-      "rm -rf $WORKSPACE/build && mkdir -p $WORKSPACE/build && cd $WORKSPACE/build",
+      "mkdir -p $WORKSPACE/build && cd $WORKSPACE/build",
       "../configure --prefix=$RISCV",
       "make"
     ],
@@ -129,7 +129,7 @@
     "upstream": "toolchain_newlib",
     "build": [
       "echo 'Build'",
-      "rm -rf $WORKSPACE/build && mkdir -p $WORKSPACE/build && cd $WORKSPACE/build",
+      "mkdir -p $WORKSPACE/build && cd $WORKSPACE/build",
       "../configure --prefix=$RISCV",
       "make"
     ],

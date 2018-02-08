@@ -6,7 +6,7 @@
     "build": [
       "echo 'Build'",
       "mkdir -p $WORKSPACE/build && cd $WORKSPACE/build",
-      "../configure --prefix=$RISCV --enable-multilib",
+      "../configure --prefix=$RISCV",
       "make linux"
     ],
     "test": [

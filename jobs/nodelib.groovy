@@ -1,27 +1,4 @@
 // DO NOT EDIT, MANAGED FILE
-def spike_build() {
-    sh("""
-export MAKEFLAGS=-j8
-echo 'Build' && 
-mkdir -p $WORKSPACE/build && cd $WORKSPACE/build && 
-../configure --prefix=$RISCV --with-fesvr=$RISCV && 
-make
-""")
-}
-def spike_test() {
-    sh("""
-export MAKEFLAGS=-j8
-echo 'Test' && 
-/bin/true
-""")
-}
-def spike_deploy() {
-    sh("""
-export MAKEFLAGS=-j8
-echo 'Deploy' && 
-cd $WORKSPACE/build && make install
-""")
-}
 def rocketchip_build() {
     sh("""
 export MAKEFLAGS=-j8
@@ -43,65 +20,21 @@ echo 'Deploy' &&
 /bin/true
 """)
 }
-def tests_build() {
+def qemu_build() {
     sh("""
 export MAKEFLAGS=-j8
 echo 'Build' && 
 /bin/true
 """)
 }
-def tests_test() {
+def qemu_test() {
     sh("""
 export MAKEFLAGS=-j8
 echo 'Test' && 
 /bin/true
 """)
 }
-def tests_deploy() {
-    sh("""
-export MAKEFLAGS=-j8
-echo 'Deploy' && 
-/bin/true
-""")
-}
-def toolchain_newlib_build() {
-    sh("""
-export MAKEFLAGS=-j8
-echo 'Build' && 
-mkdir -p $WORKSPACE/build && cd $WORKSPACE/build && 
-../configure --prefix=$RISCV && 
-make
-""")
-}
-def toolchain_newlib_test() {
-    sh("""
-export MAKEFLAGS=-j8
-echo 'Test' && 
-/bin/true
-""")
-}
-def toolchain_newlib_deploy() {
-    sh("""
-export MAKEFLAGS=-j8
-echo 'Deploy' && 
-cd $WORKSPACE/build && make install
-""")
-}
-def openocd_build() {
-    sh("""
-export MAKEFLAGS=-j8
-echo 'Build' && 
-/bin/true
-""")
-}
-def openocd_test() {
-    sh("""
-export MAKEFLAGS=-j8
-echo 'Test' && 
-/bin/true
-""")
-}
-def openocd_deploy() {
+def qemu_deploy() {
     sh("""
 export MAKEFLAGS=-j8
 echo 'Deploy' && 
@@ -131,21 +64,44 @@ echo 'Deploy' &&
 cd $WORKSPACE/build && make install
 """)
 }
-def qemu_build() {
+def toolchain_newlib_build() {
     sh("""
 export MAKEFLAGS=-j8
 echo 'Build' && 
-/bin/true
+mkdir -p $WORKSPACE/build && cd $WORKSPACE/build && 
+../configure --prefix=$RISCV && 
+make
 """)
 }
-def qemu_test() {
+def toolchain_newlib_test() {
     sh("""
 export MAKEFLAGS=-j8
 echo 'Test' && 
 /bin/true
 """)
 }
-def qemu_deploy() {
+def toolchain_newlib_deploy() {
+    sh("""
+export MAKEFLAGS=-j8
+echo 'Deploy' && 
+cd $WORKSPACE/build && make install
+""")
+}
+def tests_build() {
+    sh("""
+export MAKEFLAGS=-j8
+echo 'Build' && 
+/bin/true
+""")
+}
+def tests_test() {
+    sh("""
+export MAKEFLAGS=-j8
+echo 'Test' && 
+/bin/true
+""")
+}
+def tests_deploy() {
     sh("""
 export MAKEFLAGS=-j8
 echo 'Deploy' && 
@@ -173,12 +129,35 @@ echo 'Deploy' &&
 /bin/true
 """)
 }
+def spike_build() {
+    sh("""
+export MAKEFLAGS=-j8
+echo 'Build' && 
+mkdir -p $WORKSPACE/build && cd $WORKSPACE/build && 
+../configure --prefix=$RISCV --with-fesvr=$RISCV && 
+make
+""")
+}
+def spike_test() {
+    sh("""
+export MAKEFLAGS=-j8
+echo 'Test' && 
+/bin/true
+""")
+}
+def spike_deploy() {
+    sh("""
+export MAKEFLAGS=-j8
+echo 'Deploy' && 
+cd $WORKSPACE/build && make install
+""")
+}
 def toolchain_linux_build() {
     sh("""
 export MAKEFLAGS=-j8
 echo 'Build' && 
 mkdir -p $WORKSPACE/build && cd $WORKSPACE/build && 
-../configure --prefix=$RISCV --enable-multilib && 
+../configure --prefix=$RISCV && 
 make linux
 """)
 }
@@ -217,6 +196,27 @@ def pk_deploy() {
 export MAKEFLAGS=-j8
 echo 'Deploy' && 
 cd $WORKSPACE/build && make install
+""")
+}
+def openocd_build() {
+    sh("""
+export MAKEFLAGS=-j8
+echo 'Build' && 
+/bin/true
+""")
+}
+def openocd_test() {
+    sh("""
+export MAKEFLAGS=-j8
+echo 'Test' && 
+/bin/true
+""")
+}
+def openocd_deploy() {
+    sh("""
+export MAKEFLAGS=-j8
+echo 'Deploy' && 
+/bin/true
 """)
 }
 return this;

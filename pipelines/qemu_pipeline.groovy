@@ -1,7 +1,13 @@
+properties([
+buildDiscarder(logRotator(artifactDaysToKeepStr: '', artifactNumToKeepStr: '', daysToKeepStr: '', numToKeepStr: '5')),
+[$class: 'CopyArtifactPermissionProperty', projectNames: '*']
+])
+
 node {
 def nodelib = load("${env.RISCV_CI}/jobs/nodelib.groovy")
 
 stage('Clone') {
+    sh('printenv')
     checkout([ $class: 'GitSCM',
                     branches: [[name: '*/master']],
                     userRemoteConfigs: [[url: 'https://github.com/riscv/riscv-qemu']],
@@ -11,19 +17,16 @@ stage('Clone') {
 }
 
 stage('Build') {
-    sh('printenv')
     nodelib.qemu_build()
     sh('sleep 2s')
 }
 
 stage('Test') {
-    sh('printenv')
     nodelib.qemu_test()
     sh('sleep 2s')
 }
 
 stage('Archive') {
-    sh('printenv')
     nodelib.qemu_archive()
     sh('sleep 2s')
 }

@@ -48,9 +48,9 @@ stage('Test') {{
     sh('sleep 2s')
 }}
 
-stage('Deploy') {{
+stage('Archive') {{
     sh('printenv')
-    nodelib.{pipe}_deploy()
+    nodelib.{pipe}_archive()
     sh('sleep 2s')
 }}
 }}
@@ -61,7 +61,7 @@ stage('Deploy') {{
 f = open("nodelib.groovy", 'w')
 f.write("// DO NOT EDIT, MANAGED FILE\n")
 for pipe in pipespec:
-    for stage in ["build", "test", "deploy"]:
+    for stage in ["build", "test", "archive"]:
         f.write("""\
 def {}_{}() {{
     sh(\"\"\"

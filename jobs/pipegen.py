@@ -6,20 +6,6 @@ jsonfile = "pipespec.json"
 
 pipespec = json.load(open(jsonfile))
 
-# master job (deprecated)
-#pipelines = []
-#for pipe in pipespec:
-#    pipelines.append("    pipelines['{pipe}'] = {{ stage('{pipe}') {{ build job: '{pipe}', parameters: [[$class: 'StringParameterValue', name: 'RISCV_CI', value:\"${{env.RISCV_CI}}\"], [$class: 'StringParameterValue', name: 'RISCV', value:\"${{env.RISCV_CI}}/riscv\"]] }} }}".format(**{'pipe': pipe}))
-#
-#f = open('../pipelines/master_pipeline.groovy', 'w')
-#f.write("""\
-#node {{
-#    def pipelines = [:]
-#{}
-#    parallel pipelines
-#}}""".format('\n'.join(pipelines)))
-#f.close()
-
 # pipeline pipelines
 for pipe in pipespec:
     f = open("../pipelines/{}_pipeline.groovy".format(pipe), 'w')
@@ -28,6 +14,7 @@ node {{
 def nodelib = load("${{env.RISCV_CI}}/jobs/nodelib.groovy")
 
 stage('Clone') {{
+    sh('printenv')
     checkout([ $class: 'GitSCM',
                     branches: [[name: '*/master']],
                     userRemoteConfigs: [[url: 'https://github.com/{github}']],
@@ -37,19 +24,16 @@ stage('Clone') {{
 }}
 
 stage('Build') {{
-    sh('printenv')
     nodelib.{pipe}_build()
     sh('sleep 2s')
 }}
 
 stage('Test') {{
-    sh('printenv')
     nodelib.{pipe}_test()
     sh('sleep 2s')
 }}
 
 stage('Archive') {{
-    sh('printenv')
     nodelib.{pipe}_archive()
     sh('sleep 2s')
 }}
@@ -61,7 +45,8 @@ stage('Archive') {{
 f = open("nodelib.groovy", 'w')
 f.write("// DO NOT EDIT, MANAGED FILE\n")
 for pipe in pipespec:
-    for stage in ["build", "test", "archive"]:
+    # sh
+    for stage in ["build", "test"]:
         f.write("""\
 def {}_{}() {{
     sh(\"\"\"
@@ -69,6 +54,18 @@ def {}_{}() {{
 \"\"\")
 }}
 """.format(pipe, stage, " && \n".join(pipespec[pipe][stage])))
+    # archiveArtifaces
+    for stage in ["archive"]:
+        f.write("""\
+def {}_{}() {{
+    archiveArtifacts artifacts: 'build/riscv/**/*', excludes: ''
+}}
+
+""".format(pipe, stage, " && \n".join(pipespec[pipe][stage])))
+
+    
+
+
 f.write("return this;\n")
 f.close()
 

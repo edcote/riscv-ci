@@ -22,9 +22,9 @@ stage('Test') {
     sh('sleep 2s')
 }
 
-stage('Deploy') {
+stage('Archive') {
     sh('printenv')
-    nodelib.qemu_deploy()
+    nodelib.qemu_archive()
     sh('sleep 2s')
 }
 }

@@ -22,9 +22,9 @@ stage('Test') {
     sh('sleep 2s')
 }
 
-stage('Deploy') {
+stage('Archive') {
     sh('printenv')
-    nodelib.fesvr_deploy()
+    nodelib.fesvr_archive()
     sh('sleep 2s')
 }
 }

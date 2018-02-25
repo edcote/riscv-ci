@@ -22,9 +22,9 @@ stage('Test') {
     sh('sleep 2s')
 }
 
-stage('Deploy') {
+stage('Archive') {
     sh('printenv')
-    nodelib.toolchain_linux_deploy()
+    nodelib.toolchain_linux_archive()
     sh('sleep 2s')
 }
 }

@@ -22,9 +22,9 @@ stage('Test') {
     sh('sleep 2s')
 }
 
-stage('Deploy') {
+stage('Archive') {
     sh('printenv')
-    nodelib.spike_deploy()
+    nodelib.spike_archive()
     sh('sleep 2s')
 }
 }

@@ -22,9 +22,9 @@ stage('Test') {
     sh('sleep 2s')
 }
 
-stage('Deploy') {
+stage('Archive') {
     sh('printenv')
-    nodelib.rocketchip_deploy()
+    nodelib.rocketchip_archive()
     sh('sleep 2s')
 }
 }

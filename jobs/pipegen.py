@@ -65,7 +65,6 @@ for pipe in pipespec:
         f.write("""\
 def {}_{}() {{
     sh(\"\"\"
-export MAKEFLAGS=-j8
 {}
 \"\"\")
 }}

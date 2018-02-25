@@ -10,6 +10,11 @@ pipespec = json.load(open(jsonfile))
 for pipe in pipespec:
     f = open("../pipelines/{}_pipeline.groovy".format(pipe), 'w')
     f.write("""\
+properties([
+buildDiscarder(logRotator(artifactDaysToKeepStr: '', artifactNumToKeepStr: '', daysToKeepStr: '', numToKeepStr: '5')),
+[$class: 'CopyArtifactPermissionProperty', projectNames: '*']
+])
+
 node {{
 def nodelib = load("${{env.RISCV_CI}}/jobs/nodelib.groovy")
 
@@ -54,7 +59,7 @@ def {}_{}() {{
 \"\"\")
 }}
 """.format(pipe, stage, " && \n".join(pipespec[pipe][stage])))
-    # archiveArtifaces
+    # archiveArtifacts
     for stage in ["archive"]:
         f.write("""\
 def {}_{}() {{
@@ -62,9 +67,6 @@ def {}_{}() {{
 }}
 
 """.format(pipe, stage, " && \n".join(pipespec[pipe][stage])))
-
-    
-
 
 f.write("return this;\n")
 f.close()

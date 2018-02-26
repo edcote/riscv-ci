@@ -189,7 +189,7 @@
   "tests": {
     "github": "riscv/riscv-tests",
     "pipeline": "pipeline/tests.groovy",
-    "dependencies": ["spike"],
+    "dependencies": ["spike", "toolchain_newlib", "pk"],
     "build": [
       "echo 'Build'",
       "rm -rf $WORKSPACE/build && mkdir -p $WORKSPACE/build && cd $WORKSPACE/build",

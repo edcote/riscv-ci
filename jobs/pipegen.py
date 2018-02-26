@@ -36,6 +36,7 @@ stage('Clone') {{
 
 stage('Dependencies') {{
     {copyArtifacts}
+    sh('find . -name bin -type d -exec chmod +x {{}}/* \\\;')
     sh('sleep 0.1s')
 }}
 

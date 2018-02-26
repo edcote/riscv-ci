@@ -1,4 +1,27 @@
 // DO NOT EDIT, MANAGED FILE
+def toolchain_newlib_build() {
+    withEnv(["PATH=${env.WORKSPACE}/riscv-root/bin:${env.PATH}"]) { 
+    sh("""
+echo 'Build' && 
+rm -rf $WORKSPACE/build && mkdir -p $WORKSPACE/build && cd $WORKSPACE/build && 
+PATH=$WORKSPACE/riscv-root/bin:$PATH ../configure --prefix=$WORKSPACE/riscv-root && 
+PATH=$WORKSPACE/riscv-root/bin:$PATH make -j4 && 
+make install
+""")
+    }
+}
+
+
+def toolchain_newlib_test() {
+    withEnv(["PATH=${env.WORKSPACE}/riscv-root/bin:${env.PATH}"]) { 
+    sh("""
+echo 'Test' && 
+/bin/true
+""")
+    }
+}
+
+
 def pk_build() {
     withEnv(["PATH=${env.WORKSPACE}/riscv-root/bin:${env.PATH}"]) { 
     sh("""
@@ -44,6 +67,29 @@ echo 'Test' &&
 }
 
 
+def fesvr_build() {
+    withEnv(["PATH=${env.WORKSPACE}/riscv-root/bin:${env.PATH}"]) { 
+    sh("""
+echo 'Build' && 
+rm -rf $WORKSPACE/build && mkdir -p $WORKSPACE/build && cd $WORKSPACE/build && 
+PATH=$WORKSPACE/riscv-root/bin:$PATH ../configure --prefix=$WORKSPACE/riscv-root && 
+PATH=$WORKSPACE/riscv-root/bin:$PATH make -j4 && 
+make install
+""")
+    }
+}
+
+
+def fesvr_test() {
+    withEnv(["PATH=${env.WORKSPACE}/riscv-root/bin:${env.PATH}"]) { 
+    sh("""
+echo 'Test' && 
+/bin/true
+""")
+    }
+}
+
+
 def qemu_build() {
     withEnv(["PATH=${env.WORKSPACE}/riscv-root/bin:${env.PATH}"]) { 
     sh("""
@@ -64,20 +110,17 @@ echo 'Test' &&
 }
 
 
-def fesvr_build() {
+def openocd_build() {
     withEnv(["PATH=${env.WORKSPACE}/riscv-root/bin:${env.PATH}"]) { 
     sh("""
 echo 'Build' && 
-rm -rf $WORKSPACE/build && mkdir -p $WORKSPACE/build && cd $WORKSPACE/build && 
-PATH=$WORKSPACE/riscv-root/bin:$PATH ../configure --prefix=$WORKSPACE/riscv-root && 
-PATH=$WORKSPACE/riscv-root/bin:$PATH make -j4 && 
-make install
+rm -rf $WORKSPACE/build && mkdir -p $WORKSPACE/riscv-root && cd $WORKSPACE/build
 """)
     }
 }
 
 
-def fesvr_test() {
+def openocd_test() {
     withEnv(["PATH=${env.WORKSPACE}/riscv-root/bin:${env.PATH}"]) { 
     sh("""
 echo 'Test' && 
@@ -130,26 +173,6 @@ echo 'Test' &&
 }
 
 
-def rocketchip_build() {
-    withEnv(["PATH=${env.WORKSPACE}/riscv-root/bin:${env.PATH}"]) { 
-    sh("""
-echo 'Build' && 
-rm -rf $WORKSPACE/build && mkdir -p $WORKSPACE/build && cd $WORKSPACE/build
-""")
-    }
-}
-
-
-def rocketchip_test() {
-    withEnv(["PATH=${env.WORKSPACE}/riscv-root/bin:${env.PATH}"]) { 
-    sh("""
-echo 'Test' && 
-/bin/true
-""")
-    }
-}
-
-
 def spike_build() {
     withEnv(["PATH=${env.WORKSPACE}/riscv-root/bin:${env.PATH}"]) { 
     sh("""
@@ -173,40 +196,17 @@ echo 'Test' &&
 }
 
 
-def toolchain_newlib_build() {
+def rocketchip_build() {
     withEnv(["PATH=${env.WORKSPACE}/riscv-root/bin:${env.PATH}"]) { 
     sh("""
 echo 'Build' && 
-rm -rf $WORKSPACE/build && mkdir -p $WORKSPACE/build && cd $WORKSPACE/build && 
-PATH=$WORKSPACE/riscv-root/bin:$PATH ../configure --prefix=$WORKSPACE/riscv-root && 
-PATH=$WORKSPACE/riscv-root/bin:$PATH make -j4 && 
-make install
+rm -rf $WORKSPACE/build && mkdir -p $WORKSPACE/build && cd $WORKSPACE/build
 """)
     }
 }
 
 
-def toolchain_newlib_test() {
-    withEnv(["PATH=${env.WORKSPACE}/riscv-root/bin:${env.PATH}"]) { 
-    sh("""
-echo 'Test' && 
-/bin/true
-""")
-    }
-}
-
-
-def openocd_build() {
-    withEnv(["PATH=${env.WORKSPACE}/riscv-root/bin:${env.PATH}"]) { 
-    sh("""
-echo 'Build' && 
-rm -rf $WORKSPACE/build && mkdir -p $WORKSPACE/riscv-root && cd $WORKSPACE/build
-""")
-    }
-}
-
-
-def openocd_test() {
+def rocketchip_test() {
     withEnv(["PATH=${env.WORKSPACE}/riscv-root/bin:${env.PATH}"]) { 
     sh("""
 echo 'Test' && 

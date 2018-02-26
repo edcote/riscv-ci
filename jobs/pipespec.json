@@ -2,63 +2,65 @@
   "toolchain_linux": {
     "github": "riscv/riscv-gnu-toolchain",
     "pipeline": "pipeline/toolchain.groovy",
-    "upstream": "",
+    "dependencies": [],
     "build": [
       "echo 'Build'",
-      "mkdir -p $WORKSPACE/build && cd $WORKSPACE/build",
-      "../configure --prefix=$RISCV",
-      "make linux"
+      "rm -rf $WORKSPACE/build && mkdir -p $WORKSPACE/build && cd $WORKSPACE/build",
+      "PATH=$WORKSPACE/riscv-root/bin:$PATH ../configure --prefix=$WORKSPACE/riscv-root",
+      "PATH=$WORKSPACE/riscv-root/bin:$PATH make -j4 linux"
     ],
     "test": [
       "echo 'Test'",
       "/bin/true"
     ],
-    "deploy": [
-      "echo 'Deploy'",
-      "cd $WORKSPACE/build && make install"
-    ]
+    "archive": {
+      "artifacts": "riscv-root/**/*",
+      "excludes": ""
+    }
   },
 
 
   "toolchain_newlib": {
     "github": "riscv/riscv-gnu-toolchain",
     "pipeline": "pipeline/toolchain.groovy",
-    "upstream": "",
+    "dependencies": [],
     "build": [
       "echo 'Build'",
-      "mkdir -p $WORKSPACE/build && cd $WORKSPACE/build",
-      "../configure --prefix=$RISCV",
-      "make"
+      "rm -rf $WORKSPACE/build && mkdir -p $WORKSPACE/build && cd $WORKSPACE/build",
+      "PATH=$WORKSPACE/riscv-root/bin:$PATH ../configure --prefix=$WORKSPACE/riscv-root",
+      "PATH=$WORKSPACE/riscv-root/bin:$PATH make -j4",
+      "make install"
     ],
     "test": [
       "echo 'Test'",
       "/bin/true"
     ],
-    "deploy": [
-      "echo 'Deploy'",
-      "cd $WORKSPACE/build && make install"
-    ]
+    "archive": {
+      "artifacts": "riscv-root/**/*",
+      "excludes": ""
+    }
   },
 
 
   "spike": {
     "github": "riscv/riscv-isa-sim",
     "pipeline": "pipeline/spike.groovy",
-    "upstream": "tests,fesvr",
+    "dependencies": ["fesvr"],
     "build": [
       "echo 'Build'",
-      "mkdir -p $WORKSPACE/build && cd $WORKSPACE/build",
-      "../configure --prefix=$RISCV --with-fesvr=$RISCV",
-      "make"
+      "rm -rf $WORKSPACE/build && mkdir -p $WORKSPACE/build && cd $WORKSPACE/build",
+      "PATH=$WORKSPACE/riscv-root/bin:$PATH ../configure --prefix=$WORKSPACE/riscv-root --with-fesvr=$WORKSPACE/riscv-root",
+      "PATH=$WORKSPACE/riscv-root/bin:$PATH make -j4",
+      "make install"
     ],
     "test": [
       "echo 'Test'",
       "/bin/true"
     ],
-    "deploy": [
-      "echo 'Deploy'",
-      "cd $WORKSPACE/build && make install"
-    ]
+    "archive": {
+      "artifacts": "riscv-root/**/*",
+      "excludes": ""
+    }
   },
 
 
@@ -66,19 +68,19 @@
   "rocketchip": {
     "github": "freechipsproject/rocket-chip",
     "pipeline": "pipeline/rocketchip.groovy",
-    "upstream": "tests,fesvr,pk,toolchain_newlib",
+    "dependencies": [],
     "build": [
       "echo 'Build'",
-      "/bin/true"
+      "rm -rf $WORKSPACE/build && mkdir -p $WORKSPACE/build && cd $WORKSPACE/build"
     ],
     "test": [
       "echo 'Test'",
       "/bin/true"
     ],
-    "deploy": [
-      "echo 'Deploy'",
-      "/bin/true"
-    ]
+    "archive": {
+      "artifacts": "riscv-root/**/*",
+      "excludes": ""
+    }
   },
 
 
@@ -86,118 +88,123 @@
   "fesvr": {
     "github": "riscv/riscv-fesvr",
     "pipeline": "pipeline/fesvr.groovy",
-    "upstream": "",
+    "dependencies": [],
     "build": [
       "echo 'Build'",
-      "mkdir -p $WORKSPACE/build && cd $WORKSPACE/build",
-      "../configure --prefix=$RISCV",
-      "make"
+      "rm -rf $WORKSPACE/build && mkdir -p $WORKSPACE/build && cd $WORKSPACE/build",
+      "PATH=$WORKSPACE/riscv-root/bin:$PATH ../configure --prefix=$WORKSPACE/riscv-root",
+      "PATH=$WORKSPACE/riscv-root/bin:$PATH make -j4",
+      "make install"
     ],
     "test": [
       "echo 'Test'",
       "/bin/true"
     ],
-    "deploy": [
-      "echo 'Deploy'",
-      "cd $WORKSPACE/build && make install"
-    ]
+    "archive": {
+      "artifacts": "riscv-root/**/*",
+      "excludes": ""
+    }
   },
 
 
   "qemu": {
     "github": "riscv/riscv-qemu",
     "pipeline": "pipeline/qemu.groovy",
-    "upstream": "toolchain_linux,linux",
+    "dependencies": [],
     "build": [
       "echo 'Build'",
-      "/bin/true"
+      "rm -rf $WORKSPACE/build && mkdir -p $WORKSPACE/build && cd $WORKSPACE/build"
     ],
     "test": [
       "echo 'Test'",
       "/bin/true"
     ],
-    "deploy": [
-      "echo 'Deploy'",
-      "/bin/true"
-    ]
+    "archive": {
+      "artifacts": "riscv-root/**/*",
+      "excludes": ""
+    }
   },
 
 
   "pk": {
     "github": "riscv/riscv-pk",
     "pipeline": "pipeline/pk.groovy",
-    "upstream": "toolchain_newlib",
+    "dependencies": ["toolchain_newlib"],
     "build": [
       "echo 'Build'",
-      "mkdir -p $WORKSPACE/build && cd $WORKSPACE/build",
-      "../configure --prefix=$RISCV",
-      "make"
+      "rm -rf $WORKSPACE/build && mkdir -p $WORKSPACE/build && cd $WORKSPACE/build",
+      "PATH=$WORKSPACE/riscv-root/bin:$PATH ../configure --prefix=$WORKSPACE/riscv-root --host=riscv64-unknown-elf",
+      "PATH=$WORKSPACE/riscv-root/bin:$PATH make -j4",
+      "make install"
     ],
     "test": [
       "echo 'Test'",
       "/bin/true"
     ],
-    "deploy": [
-      "echo 'Deploy'",
-      "cd $WORKSPACE/build && make install"
-    ]
+    "archive": {
+      "artifacts": "riscv-root/**/*",
+      "excludes": ""
+    }
   },
 
 
   "openocd": {
     "github": "riscv/riscv-openocd",
     "pipeline": "pipeline/openocd.groovy",
-    "upstream": "",
+    "dependencies": [],
     "build": [
       "echo 'Build'",
-      "/bin/true"
+      "rm -rf $WORKSPACE/build && mkdir -p $WORKSPACE/riscv-root && cd $WORKSPACE/build"
     ],
     "test": [
       "echo 'Test'",
       "/bin/true"
     ],
-    "deploy": [
-      "echo 'Deploy'",
-      "/bin/true"
-    ]
+    "archive": {
+      "artifacts": "riscv-root/**/*",
+      "excludes": ""
+    }
   },
 
 
   "linux": {
     "github": "riscv/riscv-linux",
     "pipeline": "pipeline/linux.groovy",
-    "upstream": "toolchain_linux",
+    "dependencies": [],
     "build": [
       "echo 'Build'",
-      "/bin/true"
+      "rm -rf $WORKSPACE/build && mkdir -p $WORKSPACE/build && cd $WORKSPACE/build"
     ],
     "test": [
       "echo 'Test'",
       "/bin/true"
     ],
-    "deploy": [
-      "echo 'Deploy'",
-      "/bin/true"
-    ]
+    "archive": {
+      "artifacts": "riscv-root/**/*",
+      "excludes": ""
+    }
   },
 
 
   "tests": {
     "github": "riscv/riscv-tests",
     "pipeline": "pipeline/tests.groovy",
-    "upstream": "",
+    "dependencies": ["spike"],
     "build": [
       "echo 'Build'",
-      "/bin/true"
+      "rm -rf $WORKSPACE/build && mkdir -p $WORKSPACE/build && cd $WORKSPACE/build",
+      "PATH=$WORKSPACE/riscv-root/bin:$PATH ../configure --prefix=$WORKSPACE/riscv-root",
+      "PATH=$WORKSPACE/riscv-root/bin:$PATH make -j4",
+      "make install"
     ],
     "test": [
       "echo 'Test'",
       "/bin/true"
     ],
-    "deploy": [
-      "echo 'Deploy'",
-      "/bin/true"
-    ]
+    "archive": {
+      "artifacts": "riscv-root/**/*",
+      "excludes": ""
+    }
   }
 }
 

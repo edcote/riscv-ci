@@ -16,11 +16,17 @@ for pipe in pipespec:
 
     copyArtifacts = "\n".join(list(map(copyA, pipespec[pipe]['dependencies'])))
 
+    upstream = ",".join(list(pipespec[pipe]['dependencies']))
+
     f.write("""\
-properties([
-buildDiscarder(logRotator(artifactDaysToKeepStr: '', artifactNumToKeepStr: '', daysToKeepStr: '', numToKeepStr: '5')),
+properties(
+[
+buildDiscarder(logRotator(artifactDaysToKeepStr: '', artifactNumToKeepStr: '', daysToKeepStr: '', numToKeepStr: '7')),
+disableConcurrentBuilds(), 
+pipelineTriggers([upstream('{upstream}'), cron('H/15 * * * *')]),
 [$class: 'CopyArtifactPermissionProperty', projectNames: '*']
-])
+]
+)
 
 node {{
 def nodelib = load("${{env.RISCV_CI}}/jobs/nodelib.groovy")
@@ -36,7 +42,7 @@ stage('Clone') {{
 
 stage('Dependencies') {{
     {copyArtifacts}
-    sh("cd riscv-root && if [ -f riscv.tgz ]; then tar -zxf riscv.tgz; else echo 'riscv.tgz not found' && true; fi")
+    sh("mkdir -p riscv-root && cd riscv-root && if [ -f riscv.tgz ]; then tar -zxf riscv.tgz; else echo 'riscv.tgz not found' && true; fi")
     sh('sleep 0.1s')
 }}
 
@@ -52,12 +58,12 @@ stage('Test') {{
 }}
 
 stage('Archive') {{
-    sh("cd riscv-root && rm -f *.tgz && tar -czvf riscv.tgz *")
+    sh("cd riscv-root && touch {pipe}-archive && rm -f *.tgz && tar -czvf riscv.tgz *")
     archiveArtifacts artifacts: 'riscv-root/*.tgz', excludes: ''
     sh('sleep 0.1s')
 }}
 }}
-    """.format(**{'github': pipespec[pipe]['github'], 'pipe': pipe, 'copyArtifacts': copyArtifacts}))
+    """.format(**{'github': pipespec[pipe]['github'], 'pipe': pipe, 'upstream': upstream, 'copyArtifacts': copyArtifacts}))
     f.close
 
 # dummy pipelines

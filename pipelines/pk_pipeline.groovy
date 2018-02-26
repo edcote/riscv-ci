@@ -33,7 +33,7 @@ stage('Test') {
 }
 
 stage('Archive') {
-    sh("cd riscv-root && tar -czvf riscv.tgz *")
+    sh("cd riscv-root && rm -f *.tgz && tar -czvf riscv.tgz *")
     archiveArtifacts artifacts: 'riscv-root/*.tgz', excludes: ''
     sh('sleep 0.1s')
 }

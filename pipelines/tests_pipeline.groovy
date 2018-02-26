@@ -17,6 +17,8 @@ stage('Clone') {
 
 stage('Dependencies') {
         copyArtifacts filter: '**/*', fingerprintArtifacts: true, projectName: 'spike', selector: lastSuccessful()
+    copyArtifacts filter: '**/*', fingerprintArtifacts: true, projectName: 'toolchain_newlib', selector: lastSuccessful()
+    copyArtifacts filter: '**/*', fingerprintArtifacts: true, projectName: 'pk', selector: lastSuccessful()
     sh("cd riscv-root && if [ -f riscv.tgz ]; then tar -zxf riscv.tgz; else echo 'riscv.tgz not found' && true; fi")
     sh('sleep 0.1s')
 }
@@ -33,7 +35,7 @@ stage('Test') {
 }
 
 stage('Archive') {
-    sh("cd riscv-root && tar -czvf riscv.tgz *")
+    sh("cd riscv-root && rm -f *.tgz && tar -czvf riscv.tgz *")
     archiveArtifacts artifacts: 'riscv-root/*.tgz', excludes: ''
     sh('sleep 0.1s')
 }

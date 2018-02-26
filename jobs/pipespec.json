@@ -154,7 +154,7 @@
     "dependencies": [],
     "build": [
       "echo 'Build'",
-      "rm -rf $WORKSPACE/build && mkdir -p $WORKSPACE/riscv-root && cd $WORKSPACE/build"
+      "rm -rf $WORKSPACE/build && mkdir -p $WORKSPACE/build && cd $WORKSPACE/build"
     ],
     "test": [
       "echo 'Test'",

@@ -7,28 +7,34 @@ node {
 def nodelib = load("${env.RISCV_CI}/jobs/nodelib.groovy")
 
 stage('Clone') {
-    sh('printenv')
     checkout([ $class: 'GitSCM',
                     branches: [[name: '*/master']],
                     userRemoteConfigs: [[url: 'https://github.com/riscv/riscv-gnu-toolchain']],
                     extensions: [ [$class: 'SubmoduleOption', recursiveSubmodules: true, disableSubmodules: false, timeout: 120] ]
              ])
-    sh('sleep 2s')
+    sh('sleep 0.1s')
+}
+
+stage('Dependencies') {
+    
+    sh('find . -name bin -type d -exec chmod +x {}/* \\;')
+    sh('sleep 0.1s')
 }
 
 stage('Build') {
+    sh('printenv')
     nodelib.toolchain_newlib_build()
-    sh('sleep 2s')
+    sh('sleep 0.1s')
 }
 
 stage('Test') {
     nodelib.toolchain_newlib_test()
-    sh('sleep 2s')
+    sh('sleep 0.1s')
 }
 
 stage('Archive') {
-    nodelib.toolchain_newlib_archive()
-    sh('sleep 2s')
+    archiveArtifacts artifacts: 'riscv-root/**/*', excludes: ''
+    sh('sleep 0.1s')
 }
 }
     

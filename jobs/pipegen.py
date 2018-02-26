@@ -36,7 +36,7 @@ stage('Clone') {{
 
 stage('Dependencies') {{
     {copyArtifacts}
-    sh('find . -name bin -type d -exec chmod +x {{}}/* \\\;')
+    sh("cd riscv-root && if [ -f riscv.tgz ]; then tar -zxf riscv.tgz; else echo 'riscv.tgz not found' && true; fi")
     sh('sleep 0.1s')
 }}
 
@@ -52,7 +52,8 @@ stage('Test') {{
 }}
 
 stage('Archive') {{
-    archiveArtifacts artifacts: 'riscv-root/**/*', excludes: ''
+    sh("cd riscv-root && tar -czvf riscv.tgz *")
+    archiveArtifacts artifacts: 'riscv-root/*.tgz', excludes: ''
     sh('sleep 0.1s')
 }}
 }}

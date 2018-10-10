@@ -18,8 +18,6 @@
       "excludes": ""
     }
   },
-
-
   "toolchain_newlib": {
     "github": "riscv/riscv-gnu-toolchain",
     "pipeline": "pipeline/toolchain.groovy",
@@ -40,12 +38,12 @@
       "excludes": ""
     }
   },
-
-
   "spike": {
     "github": "riscv/riscv-isa-sim",
     "pipeline": "pipeline/spike.groovy",
-    "dependencies": ["fesvr"],
+    "dependencies": [
+      "fesvr"
+    ],
     "build": [
       "echo 'Build'",
       "rm -rf $WORKSPACE/build && mkdir -p $WORKSPACE/build && cd $WORKSPACE/build",
@@ -62,9 +60,6 @@
       "excludes": ""
     }
   },
-
-
-
   "rocketchip": {
     "github": "freechipsproject/rocket-chip",
     "pipeline": "pipeline/rocketchip.groovy",
@@ -82,9 +77,6 @@
       "excludes": ""
     }
   },
-
-
-
   "fesvr": {
     "github": "riscv/riscv-fesvr",
     "pipeline": "pipeline/fesvr.groovy",
@@ -105,8 +97,6 @@
       "excludes": ""
     }
   },
-
-
   "qemu": {
     "github": "riscv/riscv-qemu",
     "pipeline": "pipeline/qemu.groovy",
@@ -124,12 +114,12 @@
       "excludes": ""
     }
   },
-
-
   "pk": {
     "github": "riscv/riscv-pk",
     "pipeline": "pipeline/pk.groovy",
-    "dependencies": ["toolchain_newlib"],
+    "dependencies": [
+      "toolchain_newlib"
+    ],
     "build": [
       "echo 'Build'",
       "rm -rf $WORKSPACE/build && mkdir -p $WORKSPACE/build && cd $WORKSPACE/build",
@@ -146,8 +136,6 @@
       "excludes": ""
     }
   },
-
-
   "openocd": {
     "github": "riscv/riscv-openocd",
     "pipeline": "pipeline/openocd.groovy",
@@ -165,8 +153,6 @@
       "excludes": ""
     }
   },
-
-
   "linux": {
     "github": "riscv/riscv-linux",
     "pipeline": "pipeline/linux.groovy",
@@ -184,12 +170,14 @@
       "excludes": ""
     }
   },
-
-
   "tests": {
     "github": "riscv/riscv-tests",
     "pipeline": "pipeline/tests.groovy",
-    "dependencies": ["spike", "toolchain_newlib", "pk"],
+    "dependencies": [
+      "spike",
+      "toolchain_newlib",
+      "pk"
+    ],
     "build": [
       "echo 'Build'",
       "rm -rf $WORKSPACE/build && mkdir -p $WORKSPACE/build && cd $WORKSPACE/build",

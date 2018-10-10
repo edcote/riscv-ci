@@ -1,14 +1,16 @@
 #!/usr/bin/env python3
 
 import json
-import sys
 
 jsonfile = "pipespec.json"
 
 pipespec = json.load(open(jsonfile))
 
+
 def copyA(x):
-    return "    copyArtifacts filter: '**/*', fingerprintArtifacts: true, projectName: '{}', selector: lastSuccessful()".format(x)
+    return "    copyArtifacts filter: '**/*', fingerprintArtifacts: true, projectName: '{}', selector: lastSuccessful()".format(
+        x)
+
 
 # pipeline pipelines
 for pipe in pipespec:
@@ -63,7 +65,8 @@ stage('Archive') {{
     sh('sleep 0.1s')
 }}
 }}
-    """.format(**{'github': pipespec[pipe]['github'], 'pipe': pipe, 'upstream': upstream, 'copyArtifacts': copyArtifacts}))
+    """.format(
+        **{'github': pipespec[pipe]['github'], 'pipe': pipe, 'upstream': upstream, 'copyArtifacts': copyArtifacts}))
     f.close
 
 # dummy pipelines
@@ -86,4 +89,3 @@ def {}_{}() {{
 
 f.write("return this;\n")
 f.close()
-

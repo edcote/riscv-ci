@@ -1,6 +1,4 @@
 import groovy.json.JsonSlurper
-
-import hudson.FilePath
 import hudson.*
 
 def jsonSlurper = new JsonSlurper()
@@ -29,7 +27,7 @@ class Builder {
      * @return String
      */
     def fromFile(f) {
-      new File(f).text
+        new File(f).text
     }
 
     /**
